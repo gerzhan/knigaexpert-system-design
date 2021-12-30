@@ -1,4 +1,4 @@
-@startuml "enterprise"
+```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 ' uncomment the following line and comment the first to use locally
 ' !include C4_Context.puml
@@ -39,4 +39,4 @@ Rel_L(taxamo, braintree, "Uses for credit card processing")
 
 Lay_D(customer, braintree)
 
-@enduml
+```
