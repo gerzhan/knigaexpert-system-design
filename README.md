@@ -20,16 +20,24 @@
 ##### Контексты и сервисы
 | BoundedContext                            | Команда       | Сервис                                                                      | Что делает                                |
 | -----------                               | -----------   | -----------                                                                 | ----------                                |
-| Управление процессом оформлением заказа   | Alpha         |[ordering](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)        | Корзина, Оформление, процессинг           |
-| Управление процессом оплаты               | Beta          |[payment](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)         | Списание денег, бонусная программа        |
-| Управление процессом доставки заказа      | Gamma         |[delivery](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)        | Процессинг Сборки, доставки               |
-| Безопасность, контроль доступа            | Delta         |[socket-hub](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)      | Регистрация, аутентификация, авторизация  |
+| Управление продуктовым каталогом          | Alpha         |[catalog](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)         | Каталог, Товары                           |
+| Управление процессом оформлением заказа   | Beta          |[ordering](https://gitlab.com/microarch-ru/minimarket-csharp/ordering)       | Корзина, Оформление, процессинг заказа    |
+| Управление процессом сборки и доставки    | Gamma         |[delivery](https://gitlab.com/microarch-ru/minimarket-csharp/delivery)       | Курьеры, Процесс досставки                |
+| Управление складом                        | Delta         |[warehouse](https://gitlab.com/microarch-ru/minimarket-csharp/warehouse)     | Корзина, Оформление, процессинг           |
+| Управление процессом оплаты               | Omega         |[payment](https://gitlab.com/microarch-ru/minimarket-csharp/payment)         | Списание денег, бонусная программа        |
+
+
+##### Платформа
+| Назначение                            | Команда       | Приложение                                                           | Что делает                                |
+| -----------                           | -----------   | -----------                                                          | ----------                                |
+| Безопасность, контроль доступа        | Core          |[auth](https://gitlab.com/microarch-ru/minimarket-csharp/auth)        | Регистрация, аутентификация, авторизация  |
+
 
 ##### Фронтенд
-| Назначение                            | Команда       | Приложение                                                        | Что делает                |
-| -----------                           | -----------   | -----------                                                       | ----------                |
-| Витрина интернет магазина             | core          |[showcase](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)  | Отображает статус заказа. |
-| Панель управления интернет магазином  | core          |[backoffice](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)  | Отображает статус заказа. |
+| Назначение                            | Команда       | Приложение                                                                            | Что делает               |
+| -----------                           | -----------   | -----------                                                                           | ----------               |
+| Витрина интернет магазина             | Core          |[showcase](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/showcase)       | Отображает статус заказа |
+| Панель управления интернет магазином  | Core          |[backoffice](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)   | Отображает статус заказа |
 
 
 ## Архитектура и технологии
