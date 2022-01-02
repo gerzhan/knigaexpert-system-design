@@ -28,7 +28,7 @@
 
 
 ##### Платформа
-| Назначение                            | Команда       | Приложение                                                           | Что делает                                |
+| Назначение                            | Команда       | Приложение                                                           | Что делает                                  |
 | -----------                           | -----------   | -----------                                                          | ----------                                |
 | Безопасность, контроль доступа        | Core          |[auth](https://gitlab.com/microarch-ru/minimarket-csharp/auth)        | Регистрация, аутентификация, авторизация  |
 
@@ -56,51 +56,60 @@ skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-' Actors
-Person(customer, Пользователь, "Хочет купить продукт")
+' Showcase
+System_Boundary(showcase, "Showcase") {
+Person(customer, Покупатель, "Хочет купить продукт")
+Container(showcase_app, "Showcase Web", "React", "Витрина интернет магазина")
+Container(showcase_bff, "Showcase BFF", "Virtual Ingress Istio, Api Gateway", "Маршрутизация трафика c web приложения Showcase, аутентификацяи, авторизация")
+}
+
+' Backoffice
+System_Boundary(backoffice, "Backoffice") {
 Person(manager, Менеджер, "Управляет интернет магазином")
-
-' Frontends
-Container(showcase_app, "showcase", "React", "Витрина интернет магазина")
-Container(backoffice_app, "backoffice", "React", "Панель управления интернет магазином")  
-
-' Api Gateways
-Container(showcase_bff, "showcase BFF", "Virtual Ingress Istio, Api Gateway", "Маршрутизация трафика c web приложения Showcase, аутентификацяи, авторизация")
+Container(backoffice_app, "Backoffice Web", "React", "Панель управления интернет магазином")  
 Container(backoffice_bff, "Backoffice BFF", "Virtual Ingress Istio, Api Gateway", "Маршрутизация трафика, аутентификацяи, авторизация")
+}
+
 
 ' Services
-System_Boundary(auth_service, "auth") {
-  Container(auth, "keycloak", "Java", "Сервис управления аутентификацией")
+System_Boundary(security, "Security") {
+  Container(auth, "Keycloak", "Java", "Сервис управления аутентификацией")
   ContainerDb(auth_db, "Keycloak Database", "Postgress", "Пользователи")
   Rel(auth, auth_db, "read / write", "TCP")
 }
 
-System_Boundary(ordering_service, "ordering") {
-  Container(ordering, "ordering", "Go lang", "Управление процессом оформлением заказа")
-  ContainerDb(ordering_db, "ordering Database", "Postgress", "Продукты, заказы")
+System_Boundary(microservices, "Microservices") {
+  Container(warehouse, "Warehouse", "Go lang", "Управление складом")
+  ContainerDb(warehouse_db, "Warehouse Database", "Postgress", "Товары, остатки")
+  Rel(warehouse, warehouse_db, "read / write", "TCP")
+
+  Container(catalog, "Catalog", "Go lang", "Управление каталогом витрины")
+  ContainerDb(catalog_db, "Catalog Database", "Postgress", "Товары, цены")
+  Rel(catalog, catalog_db, "read / write", "TCP")
+
+  Container(ordering, "Ordering", "Go lang", "Управление процессом оформлением заказа")
+  ContainerDb(ordering_db, "Ordering Database", "Postgress", "Продукты, заказы")
   Rel(ordering, ordering_db, "read / write", "TCP")
-}
 
-System_Boundary(payment_service, "payment") {
-  Container(payment, "payment", "Go lang", "Управление процессом оплаты")
-  ContainerDb(payment_db, "payment Database", "Postgress", "Карты, бонусы, финансовые операции")
+  Container(payment, "Payment", "Go lang", "Управление процессом оплаты")
+  ContainerDb(payment_db, "Payment Database", "Postgress", "Карты, бонусы, финансовые операции")
   Rel(payment, payment_db, "read / write", "TCP")
-}
 
-System_Boundary(delivery_service, "delivery") {
-  Container(delivery, "delivery", "Go lang", "Управление процессом доставки заказа")
-  ContainerDb(delivery_db, "Keycloak Database", "Postgress", "Курьеры, маршруты")
+  Container(delivery, "Delivery", "Go lang", "Управление процессом доставки заказа")
+  ContainerDb(delivery_db, "Delivery Database", "Postgress", "Курьеры, маршруты")
   Rel(delivery, delivery_db, "read / write", "TCP")
-}
 
-System_Boundary(socket_hub_service, "socket-hub") {
-  Container(socket_hub, "socket-hub", "Go lang", "Hub для WebSocket, слушает NATS и отправляет данные frontend приложениям")
-}
+  ContainerQueue(items_queue, "Items Queue", "RabbitMQ", "Товары, остатки")
+  ContainerQueue(delivery_queue, "Delivery Queue", "RabbitMQ", "Задача на доставку")
+  ContainerQueue(assembly_queue, "Assembly Queue", "RabbitMQ", "Задача на сборку")
 
+}
 
 ' Front -> Auth
 Rel_L(showcase_app, auth, "Использует", "HTTPS")
 Rel_R(backoffice_app, auth, "Использует", "HTTPS")
+Lay_R(showcase,security)
+Lay_D(showcase,microservices)
 
 ' Actor -> Front
 Rel(customer, showcase_app, "Использует", "HTTPS")
@@ -109,10 +118,8 @@ Rel(customer, showcase_app, "Использует", "HTTPS")
 Rel(showcase_app, showcase_bff, "Использует", "HTTPS")
 
 ' Api Gateway -> Services
-Rel(showcase_bff, ordering_service, "Создать / получить заказ", "HTTP")
-Rel(showcase_bff, payment_service, "Списать деньги", "HTTP")
-Rel_U(socket_hub_service,showcase_bff , "Event stream", "HTTPS")
-
+Rel(showcase_bff, catalog, "Посмотреть каталог, карточку товара", "HTTP")
+Rel(showcase_bff, ordering, "Создать / получить заказ", "HTTP")
 
 
 ' Actor -> Front
@@ -122,9 +129,24 @@ Rel(manager, backoffice_app, "Использует", "HTTPS")
 Rel(backoffice_app, backoffice_bff, "Использует", "HTTPS")
 
 ' Api Gateway -> Services
-Rel(backoffice_bff, delivery_service, "Статус соборки / доставки", "HTTPS")
+Rel(backoffice_bff, delivery, "Статус соборки / доставки", "HTTP")
+Rel(backoffice_bff, warehouse, "Принять поставку", "HTTP")
 
+' Sync
+Rel_R(ordering, payment, "Списать деньги", "gRPC")
 
+' Async
+' ordering -> delivery
+Rel(ordering, delivery_queue, "Sends customer update events to", "async")   
+Rel(delivery_queue, delivery, "Sends customer update events to", "async")
+
+' warehouse -> catalog
+Rel(warehouse,  items_queue, "Sends customer update events to", "async")   
+Rel(items_queue, catalog, "Sends customer update events to", "async")
+
+' ordering -> warehouse
+Rel(ordering, assembly_queue, "Sends customer update events to", "async")   
+Rel(assembly_queue, warehouse, "Sends customer update events to", "async")
 ```
 
 ## Варианты использования
