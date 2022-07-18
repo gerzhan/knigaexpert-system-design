@@ -1,4 +1,3 @@
-## Оглавление
 [[_TOC_]]
 
 ## О проекте
@@ -11,7 +10,7 @@
 
 ## Решение
 
-## Микросервисы
+### Микросервисы
 | BoundedContext                            | Команда       | Сервис                                                                      | Что делает                                |
 | -----------                               | -----------   | -----------                                                                 | ----------                                |
 | Управление продуктовым каталогом          | Alpha         |[catalog](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)         | Каталог, Товары                           |
@@ -21,19 +20,19 @@
 | Управление процессом оплаты               | Omega         |[payment](https://gitlab.com/microarch-ru/minimarket-csharp/payment)         | Списание денег, бонусная программа        |
 
 
-## Платформенные сервисы и системы
+### Платформенные сервисы и системы
 | Назначение                            | Команда       | Приложение                                                           | Что делает                                  |
 | -----------                           | -----------   | -----------                                                          | ----------                                |
 | Безопасность, контроль доступа        | Core          |[auth](https://gitlab.com/microarch-ru/minimarket-csharp/auth)        | Регистрация, аутентификация, авторизация  |
 
 
-## Фронтенд
+### Фронтенд
 | Назначение                            | Команда       | Приложение                                                                            | Что делает               |
 | -----------                           | -----------   | -----------                                                                           | ----------               |
 | Витрина интернет магазина             | Core          |[shop](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/shop)       | Отображает статус заказа |
 | Панель управления интернет магазином  | Core          |[backoffice](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)   | Отображает статус заказа |
 
-## Context diagram
+### Context diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
@@ -60,7 +59,7 @@ Rel_R(customer, auth, "Авторизуется")
 }
 ```
 
-## Container diagram
+### Container diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
@@ -98,7 +97,7 @@ Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
 
 ```
 
-## Microservices Container diagram
+### Microservices (Container diagram)
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
@@ -133,14 +132,13 @@ System_Boundary(microservices, "Microservices") {
 }
 ```
 
-## Варианты использования
+### Варианты использования
 ```plantuml
 left to right direction
 skinparam packageStyle rectangle
 
 actor Покупатель
 actor Менеджер
-actor Кладовщик
 actor Курьер
 
 rectangle Minimarket {
@@ -155,7 +153,6 @@ rectangle Minimarket {
 
   usecase (UC-8 Сборка заказа)  as UC8
   usecase (UC-9 Доставка заказа)  as UC9
-  usecase (UC-10 Приемка товаров на склад)  as UC10
 
   Покупатель --> UC1
   Покупатель --> UC2
@@ -167,9 +164,7 @@ rectangle Minimarket {
   UC6 <-- Менеджер
   UC7 <-- Менеджер
 
-  UC8<-- Кладовщик
-  UC10<-- Кладовщик
-  
+  UC8<-- Курьер  
   UC9<-- Курьер
 }
 ```
@@ -183,7 +178,6 @@ rectangle Minimarket {
 - [UC-7](use-cases/7-order-cancellation.md) Отменить заказ.
 - [UC-8](use-cases/8-order-assembly.md) Собрать заказ.
 - [UC-9](use-cases/9-order-delivery.md) Доставить заказ.
-- [UC-10](use-cases/10-acceptance-goods-to-warehouse.md) Принять товары на склад.
 
 ### Стэйкхолдеры
 
