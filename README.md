@@ -85,39 +85,20 @@ Container_Ext(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Марш
 Rel(backoffice_app, backoffice_bff, "Использует", "HTTPS")
 Rel(manager, backoffice_app, "Управляет интернет магазином", "HTTPS")
 
-' Container(microservices, "Microservices", ".Net, Docker", "Группа микросервисов")
-' Rel(shop_bff, microservices, "Использует", "HTTPS")
-' Rel(backoffice_bff, microservices, "Использует", "HTTPS")
+Container(microservices, "Microservices", ".Net, Docker", "Группа микросервисов")
+Rel(shop_bff, microservices, "Использует", "HTTPS")
+Rel(backoffice_bff, microservices, "Использует", "HTTPS")
 
 ' Services
 Container_Ext(auth, "Auth", "Keycloak, Java", "Сервер аутентификации")
 Rel_R(shop_app, auth, "Аутентифициуется", "HTTPS")
 Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
-
-System_Boundary(microservices, "Microservices") {
-  Container(ordering, "Ordering", ".Net, Docker", "Управление процессом оформлением заказа")
-  Rel(shop_bff, ordering, "Использует", "HTTPS")  
-
-  Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
-  Rel(ordering, warehouse, "Заказы", "Async, Kafka")
-  Rel(backoffice_bff, warehouse, "Поставки, изменение остатков", "HTTPS")
-
-  Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
-  Rel(warehouse, catalog, "Товары, остатки", "Async, Kafka")
-  Rel(shop_bff, catalog, "Витрина, карточка товара", "HTTPS")
-
-  Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
-  Rel(ordering, payment, "Оплата", "Sync, gRPC")
-
-  Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
-  Rel(ordering, delivery, "Заказы", "Async, Kafka")
-}
 }
 
 
 ```
 
-## Container diagram
+## Microservices Container diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
@@ -127,20 +108,27 @@ skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
+Person(customer, Покупатель, "Совершает покупки")
+Person(manager, Менеджер, "Управляет интернет магазином")
 System_Boundary(microservices, "Microservices") {
   Container(ordering, "Ordering", ".Net, Docker", "Управление процессом оформлением заказа")
-  
+  Rel(customer, ordering, "Делает заказ", "HTTPS")  
+
   Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
-  Rel_L(ordering, warehouse, "Заказы", "Async, Kafka")
+  Rel(ordering, warehouse, "Информация о заказах", "Async, Kafka")
+  Rel(manager, warehouse, "Поставки, изменение остатков", "HTTPS")
 
   Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
-  Rel_L(warehouse, catalog, "Товары, остатки", "Async, Kafka")
+  Rel(warehouse, catalog, "Товары, остатки", "Async, Kafka")
+  Rel(customer, catalog, "Витрина, карточка товара", "HTTPS")
+  Rel_U(manager, catalog, "Изменение цен и описания", "HTTPS")
 
   Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
-  Rel(ordering, payment, "Оплата", "Sync, gRPC")
+  Rel_R(ordering, payment, "Оплата", "Sync, gRPC")
 
   Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
-  Rel(ordering, delivery, "Заказы", "Async, Kafka")
+  Rel(ordering, delivery, "Заказы в доставку", "Async, Kafka")
+  Rel_U(manager, delivery, "Статус доставки", "HTTPS")
 }
 ```
 
