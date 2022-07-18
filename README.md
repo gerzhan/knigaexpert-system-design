@@ -1,23 +1,17 @@
 ## Оглавление
-- [О проекте](#о-проекте)
-- [О продукте](#о-продукте)
-- [Проектирование](#о-продукте)
-- [Реализация](#о-продукте)
+[[_TOC_]]
 
 ## О проекте
 Мы проектируем интернет магазин.
 
-##### Цель проекта
-Демонстрация подходов и технологий:
- - DDD
- - Event Storming
- - Microservices architecture
- - DevOps practices
+## Проблема
 
-##### Event Storming
+## Event Storming
 ![Карта контекстов](img/es.jpg)
 
-##### Контексты и сервисы
+## Решение
+
+## Микросервисы
 | BoundedContext                            | Команда       | Сервис                                                                      | Что делает                                |
 | -----------                               | -----------   | -----------                                                                 | ----------                                |
 | Управление продуктовым каталогом          | Alpha         |[catalog](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)         | Каталог, Товары                           |
@@ -27,23 +21,17 @@
 | Управление процессом оплаты               | Omega         |[payment](https://gitlab.com/microarch-ru/minimarket-csharp/payment)         | Списание денег, бонусная программа        |
 
 
-##### Платформа
+## Платформенные сервисы и системы
 | Назначение                            | Команда       | Приложение                                                           | Что делает                                  |
 | -----------                           | -----------   | -----------                                                          | ----------                                |
 | Безопасность, контроль доступа        | Core          |[auth](https://gitlab.com/microarch-ru/minimarket-csharp/auth)        | Регистрация, аутентификация, авторизация  |
 
 
-##### Фронтенд
+## Фронтенд
 | Назначение                            | Команда       | Приложение                                                                            | Что делает               |
 | -----------                           | -----------   | -----------                                                                           | ----------               |
 | Витрина интернет магазина             | Core          |[showcase](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/showcase)       | Отображает статус заказа |
 | Панель управления интернет магазином  | Core          |[backoffice](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)   | Отображает статус заказа |
-
-
-## Архитектура и технологии
-- https://mehdihadeli.github.io/awesome-go-education/ddd/
-- https://mehdihadeli.github.io/awesome-go-education/cqrs/
-
 
 ## Системная архитектура
 ```plantuml
