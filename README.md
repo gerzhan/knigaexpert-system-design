@@ -129,7 +129,7 @@ System_Boundary(microservices, "Microservices") {
   Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
   Rel(ordering, delivery, "Заказы в доставку", "Async, Kafka")
   Rel_U(manager, delivery, "Статус доставки", "HTTPS")
-  Lay_L(warehouse,manager)
+  Lay_L(microservices,manager)
 }
 ```
 
