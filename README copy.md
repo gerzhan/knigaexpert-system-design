@@ -37,7 +37,6 @@
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.0.1/C4_Component.puml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.0.1/C4_Container.puml
-!include persons.puml
 
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
@@ -47,7 +46,7 @@ LAYOUT_WITH_LEGEND()
 
 ' Showcase
 System_Boundary(showcase, "Showcase") {
-' Person(customer, Покупатель, "Хочет купить продукт")
+Person(customer, Покупатель, "Хочет купить продукт")
 Container(showcase_app, "Showcase Web", "React", "Витрина интернет магазина")
 Container(showcase_bff, "Showcase BFF", "Virtual Ingress Istio, Api Gateway", "Маршрутизация трафика c web приложения Showcase, аутентификацяи, авторизация")
 }
