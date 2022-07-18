@@ -70,30 +70,78 @@ skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-Person(customer, Покупатель, "Хочет купить продукт")
+Person(customer, Покупатель, "Совершает покупки")
 Person(manager, Менеджер, "Управляет интернет магазином")
 System_Boundary(shop, "Shop") {
 ' Shop
 Container(shop_app, "Shop", "Web, React", "Витрина интернет магазина")
-Container(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
+Container_Ext(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
 Rel(shop_app, shop_bff, "Использует", "HTTPS")
-Rel(customer, shop_app, "Использует", "HTTPS")
+Rel(customer, shop_app, "Делает покупки", "HTTPS")
 
 ' Backoffice
 Container(backoffice_app, "Backoffice", "Web, React", "Панель управления интернет магазином")  
-Container(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
+Container_Ext(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
 Rel(backoffice_app, backoffice_bff, "Использует", "HTTPS")
-Rel_L(manager, backoffice_app, "Использует", "HTTPS")
+Rel(manager, backoffice_app, "Управляет интернет магазином", "HTTPS")
 
-Container(microservices, "Microservices", ".Net, Docker", "Группа микросервисов")
-Rel(shop_bff, microservices, "Использует", "HTTPS")
-Rel(backoffice_bff, microservices, "Использует", "HTTPS")
-}
+' Container(microservices, "Microservices", ".Net, Docker", "Группа микросервисов")
+' Rel(shop_bff, microservices, "Использует", "HTTPS")
+' Rel(backoffice_bff, microservices, "Использует", "HTTPS")
 
 ' Services
 Container_Ext(auth, "Auth", "Keycloak, Java", "Сервер аутентификации")
-Rel_L(shop_app, auth, "Использует", "HTTPS")
-Rel_R(backoffice_app, auth, "Использует", "HTTPS")
+Rel_R(shop_app, auth, "Аутентифициуется", "HTTPS")
+Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
+
+System_Boundary(microservices, "Microservices") {
+  Container(ordering, "Ordering", ".Net, Docker", "Управление процессом оформлением заказа")
+  Rel(shop_bff, ordering, "Использует", "HTTPS")  
+
+  Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
+  Rel(ordering, warehouse, "Заказы", "Async, Kafka")
+  Rel(backoffice_bff, warehouse, "Поставки, изменение остатков", "HTTPS")
+
+  Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
+  Rel(warehouse, catalog, "Товары, остатки", "Async, Kafka")
+  Rel(shop_bff, catalog, "Витрина, карточка товара", "HTTPS")
+
+  Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
+  Rel(ordering, payment, "Оплата", "Sync, gRPC")
+
+  Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
+  Rel(ordering, delivery, "Заказы", "Async, Kafka")
+}
+}
+
+
+```
+
+## Container diagram
+```plantuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+skinparam wrapWidth 200
+skinparam maxMessageSize 200
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+System_Boundary(microservices, "Microservices") {
+  Container(ordering, "Ordering", ".Net, Docker", "Управление процессом оформлением заказа")
+  
+  Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
+  Rel_L(ordering, warehouse, "Заказы", "Async, Kafka")
+
+  Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
+  Rel_L(warehouse, catalog, "Товары, остатки", "Async, Kafka")
+
+  Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
+  Rel(ordering, payment, "Оплата", "Sync, gRPC")
+
+  Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
+  Rel(ordering, delivery, "Заказы", "Async, Kafka")
+}
 ```
 
 ## Варианты использования
