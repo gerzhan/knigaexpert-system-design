@@ -10,28 +10,6 @@
 
 ## Решение
 
-### Микросервисы
-| BoundedContext                            | Команда       | Сервис                                                                      | Что делает                                |
-| -----------                               | -----------   | -----------                                                                 | ----------                                |
-| Управление продуктовым каталогом          | Alpha         |[catalog](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)         | Каталог, Товары                           |
-| Управление процессом оформлением заказа   | Beta          |[ordering](https://gitlab.com/microarch-ru/minimarket-csharp/ordering)       | Корзина, Оформление, процессинг заказа    |
-| Управление процессом сборки и доставки    | Gamma         |[delivery](https://gitlab.com/microarch-ru/minimarket-csharp/delivery)       | Курьеры, Процесс досставки                |
-| Управление складом                        | Delta         |[warehouse](https://gitlab.com/microarch-ru/minimarket-csharp/warehouse)     | Корзина, Оформление, процессинг           |
-| Управление процессом оплаты               | Omega         |[payment](https://gitlab.com/microarch-ru/minimarket-csharp/payment)         | Списание денег, бонусная программа        |
-
-
-### Платформенные сервисы и системы
-| Назначение                            | Команда       | Приложение                                                           | Что делает                                  |
-| -----------                           | -----------   | -----------                                                          | ----------                                |
-| Безопасность, контроль доступа        | Core          |[auth](https://gitlab.com/microarch-ru/minimarket-csharp/auth)        | Регистрация, аутентификация, авторизация  |
-
-
-### Фронтенд
-| Назначение                            | Команда       | Приложение                                                                            | Что делает               |
-| -----------                           | -----------   | -----------                                                                           | ----------               |
-| Витрина интернет магазина             | Core          |[shop](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/shop)       | Отображает статус заказа |
-| Панель управления интернет магазином  | Core          |[backoffice](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)   | Отображает статус заказа |
-
 ### Context diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
@@ -131,6 +109,28 @@ System_Boundary(microservices, "Microservices") {
   Lay_L(microservices,manager)
 }
 ```
+## Системы
+### Микросервисы
+| BoundedContext                            | Команда       | Сервис                                                                      | Что делает                                |
+| -----------                               | -----------   | -----------                                                                 | ----------                                |
+| Управление продуктовым каталогом          | Alpha         |[catalog](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)         | Каталог, Товары                           |
+| Управление процессом оформлением заказа   | Beta          |[ordering](https://gitlab.com/microarch-ru/minimarket-csharp/ordering)       | Корзина, Оформление, процессинг заказа    |
+| Управление процессом сборки и доставки    | Gamma         |[delivery](https://gitlab.com/microarch-ru/minimarket-csharp/delivery)       | Курьеры, Процесс досставки                |
+| Управление складом                        | Delta         |[warehouse](https://gitlab.com/microarch-ru/minimarket-csharp/warehouse)     | Корзина, Оформление, процессинг           |
+| Управление процессом оплаты               | Omega         |[payment](https://gitlab.com/microarch-ru/minimarket-csharp/payment)         | Списание денег, бонусная программа        |
+
+
+### Платформенные сервисы и системы
+| Назначение                            | Команда       | Приложение                                                           | Что делает                                  |
+| -----------                           | -----------   | -----------                                                          | ----------                                |
+| Безопасность, контроль доступа        | Core          |[auth](https://gitlab.com/microarch-ru/minimarket-csharp/auth)        | Регистрация, аутентификация, авторизация  |
+
+
+### Фронтенд
+| Назначение                            | Команда       | Приложение                                                                            | Что делает               |
+| -----------                           | -----------   | -----------                                                                           | ----------               |
+| Витрина интернет магазина             | Core          |[shop](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/shop)       | Отображает статус заказа |
+| Панель управления интернет магазином  | Core          |[backoffice](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)   | Отображает статус заказа |
 
 ### Варианты использования
 ```plantuml
