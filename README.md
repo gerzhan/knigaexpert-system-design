@@ -132,7 +132,7 @@ System_Boundary(microservices, "Microservices") {
 | Витрина интернет магазина             | Core          |[shop](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/shop)       | Отображает статус заказа |
 | Панель управления интернет магазином  | Core          |[backoffice](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)   | Отображает статус заказа |
 
-### Варианты использования
+## Варианты использования
 ```plantuml
 left to right direction
 skinparam packageStyle rectangle
@@ -178,11 +178,4 @@ rectangle Minimarket {
 - [UC-7](use-cases/7-order-cancellation.md) Отменить заказ.
 - [UC-8](use-cases/8-order-assembly.md) Собрать заказ.
 - [UC-9](use-cases/9-order-delivery.md) Доставить заказ.
-
-### Стэйкхолдеры
-
-- **Покупатель** - хочет получить свой заказ.
-- **Менеджер** - управляет интернет магазином.
-- **Курьер** - собирает и доставляет заказ.
-- **Кладовщик** - принимает товары на склад и выдает их курьерам.
 
