@@ -37,7 +37,7 @@
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.0.1/C4_Component.puml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.0.1/C4_Container.puml
-!include persons.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/persons.puml
 
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
