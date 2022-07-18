@@ -30,16 +30,12 @@
 ## Фронтенд
 | Назначение                            | Команда       | Приложение                                                                            | Что делает               |
 | -----------                           | -----------   | -----------                                                                           | ----------               |
-| Витрина интернет магазина             | Core          |[showcase](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/showcase)       | Отображает статус заказа |
+| Витрина интернет магазина             | Core          |[shop](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/shop)       | Отображает статус заказа |
 | Панель управления интернет магазином  | Core          |[backoffice](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)   | Отображает статус заказа |
 
-## Системная архитектура
+## Context diagram
 ```plantuml
-
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.0.1/C4_Component.puml
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.0.1/C4_Container.puml
-!include persons.puml
-
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
@@ -47,98 +43,57 @@ skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
+Person(customer, Покупатель, "Совершает покупки")
 
-' Showcase
-System_Boundary(showcase, "Showcase") {
-' Person(customer, Покупатель, "Хочет купить продукт")
-Container(showcase_app, "Showcase Web", "React", "Витрина интернет магазина")
-Container(showcase_bff, "Showcase BFF", "Virtual Ingress Istio, Api Gateway", "Маршрутизация трафика c web приложения Showcase, аутентификацяи, авторизация")
-}
-
-' Backoffice
-System_Boundary(backoffice, "Backoffice") {
+Enterprise_Boundary(shop_boundary, "Shop") {
 Person(manager, Менеджер, "Управляет интернет магазином")
-Container(backoffice_app, "Backoffice Web", "React", "Панель управления интернет магазином")  
-Container(backoffice_bff, "Backoffice BFF", "Virtual Ingress Istio, Api Gateway", "Маршрутизация трафика, аутентификацяи, авторизация")
-}
 
+' Shop
+System(shop, "Shop", "Интернет магазин")
+Rel(customer, shop, "Делает покупки")
+Rel_U(manager, shop, "Управляет")
 
 ' Services
-System_Boundary(security, "Security") {
-  Container(auth, "Keycloak", "Java", "Сервис управления аутентификацией")
-  ContainerDb(auth_db, "Keycloak Database", "Postgress", "Пользователи")
-  Rel(auth, auth_db, "read / write", "TCP")
+System_Ext(auth, "Auth", "Сервер аутентификации")
+Rel_L(shop, auth, "Использует")
+Rel_R(customer, auth, "Авторизуется")
 }
+```
 
-System_Boundary(microservices, "Microservices") {
-  Container(warehouse, "Warehouse", "Go lang", "Управление складом")
-  ContainerDb(warehouse_db, "Warehouse Database", "Postgress", "Товары, остатки")
-  Rel(warehouse, warehouse_db, "read / write", "TCP")
+## Container diagram
+```plantuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-  Container(catalog, "Catalog", "Go lang", "Управление каталогом витрины")
-  ContainerDb(catalog_db, "Catalog Database", "Postgress", "Товары, цены")
-  Rel(catalog, catalog_db, "read / write", "TCP")
+skinparam wrapWidth 200
+skinparam maxMessageSize 200
 
-  Container(ordering, "Ordering", "Go lang", "Управление процессом оформлением заказа")
-  ContainerDb(ordering_db, "Ordering Database", "Postgress", "Продукты, заказы")
-  Rel(ordering, ordering_db, "read / write", "TCP")
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
 
-  Container(payment, "Payment", "Go lang", "Управление процессом оплаты")
-  ContainerDb(payment_db, "Payment Database", "Postgress", "Карты, бонусы, финансовые операции")
-  Rel(payment, payment_db, "read / write", "TCP")
+Person(customer, Покупатель, "Хочет купить продукт")
+Person(manager, Менеджер, "Управляет интернет магазином")
+System_Boundary(shop, "Shop") {
+' Shop
+Container(shop_app, "Shop", "Web, React", "Витрина интернет магазина")
+Container(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
+Rel(shop_app, shop_bff, "Использует", "HTTPS")
+Rel(customer, shop_app, "Использует", "HTTPS")
 
-  Container(delivery, "Delivery", "Go lang", "Управление процессом доставки заказа")
-  ContainerDb(delivery_db, "Delivery Database", "Postgress", "Курьеры, маршруты")
-  Rel(delivery, delivery_db, "read / write", "TCP")
-
-  ContainerQueue(items_queue, "Items Queue", "RabbitMQ", "Товары, остатки")
-  ContainerQueue(delivery_queue, "Delivery Queue", "RabbitMQ", "Задача на доставку")
-  ContainerQueue(assembly_queue, "Assembly Queue", "RabbitMQ", "Задача на сборку")
-
-}
-
-' Front -> Auth
-Rel_L(showcase_app, auth, "Использует", "HTTPS")
-Rel_R(backoffice_app, auth, "Использует", "HTTPS")
-Lay_R(showcase,security)
-Lay_D(showcase,microservices)
-
-' Actor -> Front
-Rel(customer, showcase_app, "Использует", "HTTPS")
-
-' Front -> Api Gateway
-Rel(showcase_app, showcase_bff, "Использует", "HTTPS")
-
-' Api Gateway -> Services
-Rel(showcase_bff, catalog, "Посмотреть каталог, карточку товара", "HTTP")
-Rel(showcase_bff, ordering, "Создать / получить заказ", "HTTP")
-
-
-' Actor -> Front
-Rel(manager, backoffice_app, "Использует", "HTTPS")
-
-' Front -> Api Gateway
+' Backoffice
+Container(backoffice_app, "Backoffice", "Web, React", "Панель управления интернет магазином")  
+Container(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
 Rel(backoffice_app, backoffice_bff, "Использует", "HTTPS")
+Rel_L(manager, backoffice_app, "Использует", "HTTPS")
 
-' Api Gateway -> Services
-Rel(backoffice_bff, delivery, "Статус соборки / доставки", "HTTP")
-Rel(backoffice_bff, warehouse, "Принять поставку", "HTTP")
+Container(microservices, "Microservices", ".Net, Docker", "Группа микросервисов")
+Rel(shop_bff, microservices, "Использует", "HTTPS")
+Rel(backoffice_bff, microservices, "Использует", "HTTPS")
+}
 
-' Sync
-Rel_R(ordering, payment, "Списать деньги", "gRPC")
-
-' Async
-' ordering -> delivery
-Rel(ordering, delivery_queue, "Sends customer update events to", "async")   
-Rel(delivery_queue, delivery, "Sends customer update events to", "async")
-
-' warehouse -> catalog
-Rel(warehouse,  items_queue, "Sends customer update events to", "async")   
-Rel(items_queue, catalog, "Sends customer update events to", "async")
-
-' ordering -> warehouse
-Rel(ordering, assembly_queue, "Sends customer update events to", "async")   
-Rel(assembly_queue, warehouse, "Sends customer update events to", "async")
+' Services
+Container_Ext(auth, "Auth", "Keycloak, Java", "Сервер аутентификации")
+Rel_L(shop_app, auth, "Использует", "HTTPS")
+Rel_R(backoffice_app, auth, "Использует", "HTTPS")
 ```
 
 ## Варианты использования
