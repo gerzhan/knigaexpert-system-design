@@ -55,7 +55,7 @@ skinparam packageStyle rectangle
 
 actor Покупатель as client
 actor Менеджер as manager
-actor Склад as warehouse << Система >>
+actor Warehouse as warehouse << Система >>
 
 rectangle Catalog {
   usecase (UC-1 Просмотр каталога продуктов) as UC1

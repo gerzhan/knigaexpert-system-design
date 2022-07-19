@@ -92,7 +92,7 @@ System_Boundary(microservices, "Microservices") {
   Rel(customer, ordering, "Делает заказ", "HTTPS")  
 
   Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
-  Rel(ordering, warehouse, "Создан новый заказ", "Async, Kafka")
+  Rel(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")
   Rel(manager, warehouse, "Поставки, изменение остатков", "HTTPS")
 
   Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
@@ -104,8 +104,8 @@ System_Boundary(microservices, "Microservices") {
   Rel_R(ordering, payment, "Оплата заказа", "Sync, gRPC")
 
   Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
-  Rel(ordering, delivery, "Создан новый заказ", "Async, Kafka")
-  Rel_U(manager, delivery, "Статус доставки", "HTTPS")
+  Rel(ordering, delivery, "Cоздан новый заказ", "Async, Kafka")
+  Rel_U(manager, delivery, "Получить статус доставки", "HTTPS")
   Lay_L(microservices,manager)
 }
 ```

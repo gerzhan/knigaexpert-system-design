@@ -29,10 +29,10 @@ Rel(shop_bff, ordering, "Формирует корзину, делает зак�
 }
 
 Container_Ext(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
-Rel(ordering, warehouse, "Создан новый заказ", "Async, Kafka")
+Rel(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")
 
 Container_Ext(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
-Rel(ordering, delivery, "Создан новый заказ", "Async, Kafka")
+Rel(ordering, delivery, "Cоздан новый заказ", "Async, Kafka")
 
 Container_Ext(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
 Rel_R(ordering, payment, "Оплата заказа", "Sync, gRPC")

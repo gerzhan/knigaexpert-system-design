@@ -1,12 +1,12 @@
-# UC-2 Снижение остатков
+# UC-1 Принятие заказа
 
 ```plantuml
 participant "ordering" as ordering
 queue "orders" as orders_queue
-participant "warehouse" as warehouse
+participant "delivery" as delivery
 
-alt Успешный случай
 ordering -> orders_queue: Cоздан новый заказ
 note over orders_queue: order_created {id,items[{id, quantity},{id, quantity}]}
-end
+orders_queue -> delivery: Cоздан новый заказ
+delivery -> delivery: Заказ сохранен
 ```
