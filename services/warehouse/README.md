@@ -36,7 +36,7 @@ Container_Ext(catalog, "Catalog", ".Net, Docker", "Управление ката
 Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
 
-Container_Ext(ordering, "Ordering", ".Net, Docker", "Управление процессом оформлением заказа")
+Container_Ext(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
 Rel(ordering, warehouse, "Создан новый заказ", "Async, Kafka")
 
 ```

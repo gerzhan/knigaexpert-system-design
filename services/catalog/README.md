@@ -53,7 +53,7 @@ Rel(backoffice_bff, catalog, "Изменение цены, описания пр
 left to right direction
 skinparam packageStyle rectangle
 
-actor Покупатель as cleint
+actor Покупатель as client
 actor Менеджер as manager
 actor Склад as warehouse << Система >>
 
@@ -71,8 +71,8 @@ rectangle Catalog {
   url of UC5 is [[use-cases/uc-5.md]]
 }
 
-cleint --> UC1
-cleint --> UC2
+client --> UC1
+client --> UC2
 
 UC1 <-- manager
 UC2 <-- manager

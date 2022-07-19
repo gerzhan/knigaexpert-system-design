@@ -88,7 +88,7 @@ LAYOUT_WITH_LEGEND()
 Person(customer, Покупатель, "Совершает покупки")
 Person(manager, Менеджер, "Управляет интернет магазином")
 System_Boundary(microservices, "Microservices") {
-  Container(ordering, "Ordering", ".Net, Docker", "Управление процессом оформлением заказа")
+  Container(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
   Rel(customer, ordering, "Делает заказ", "HTTPS")  
 
   Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
@@ -101,10 +101,10 @@ System_Boundary(microservices, "Microservices") {
   Rel_U(manager, catalog, "Изменение цен и описания", "HTTPS")
 
   Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
-  Rel_R(ordering, payment, "Оплата", "Sync, gRPC")
+  Rel_R(ordering, payment, "Оплата заказа", "Sync, gRPC")
 
   Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
-  Rel(ordering, delivery, "Заказы в доставку", "Async, Kafka")
+  Rel(ordering, delivery, "Создан новый заказ", "Async, Kafka")
   Rel_U(manager, delivery, "Статус доставки", "HTTPS")
   Lay_L(microservices,manager)
 }
@@ -114,7 +114,7 @@ System_Boundary(microservices, "Microservices") {
 | BoundedContext                            | Команда       | Сервис                                                                      | Что делает                                |
 | -----------                               | -----------   | -----------                                                                 | ----------                                |
 | Управление продуктовым каталогом          | Alpha         |[catalog](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)         | Каталог, Товары                           |
-| Управление процессом оформлением заказа   | Beta          |[ordering](https://gitlab.com/microarch-ru/minimarket-csharp/ordering)       | Корзина, Оформление, процессинг заказа    |
+| Управление процессом оформления заказа   | Beta          |[ordering](https://gitlab.com/microarch-ru/minimarket-csharp/ordering)       | Корзина, Оформление, процессинг заказа    |
 | Управление процессом сборки и доставки    | Gamma         |[delivery](https://gitlab.com/microarch-ru/minimarket-csharp/delivery)       | Курьеры, Процесс досставки                |
 | Управление складом                        | Delta         |[warehouse](https://gitlab.com/microarch-ru/minimarket-csharp/warehouse)     | Корзина, Оформление, процессинг           |
 | Управление процессом оплаты               | Omega         |[payment](https://gitlab.com/microarch-ru/minimarket-csharp/payment)         | Списание денег, бонусная программа        |
