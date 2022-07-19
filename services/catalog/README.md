@@ -54,16 +54,20 @@ skinparam packageStyle rectangle
 
 actor Покупатель as cleint
 actor Менеджер as manager
-actor Курьер as courier
+actor Склад as warehouse << Система >>
 
 rectangle Catalog {
   usecase (UC-1 Просмотр каталога продуктов) as UC1
   usecase (UC-2 Посмотр карточки продукта) as UC2
   usecase (UC-3 Изменение цены, описания продукта) as UC3
+  usecase (UC-4 Добавление нового продукта) as UC4
+  usecase (UC-5 Изменене остатков существующего продукта) as UC5
 
   url of UC1 is [[use-cases/uc-1.md]]
   url of UC2 is [[use-cases/uc-2.md]]
   url of UC3 is [[use-cases/uc-3.md]]
+  url of UC4 is [[use-cases/uc-4.md]]
+  url of UC5 is [[use-cases/uc-5.md]]
 }
 
 cleint --> UC1
@@ -72,13 +76,15 @@ cleint --> UC2
 UC1 <-- manager
 UC2 <-- manager
 UC3 <-- manager
-  
-UC1<-- courier  
-UC2<-- courier
+
+UC4<-- warehouse
+UC5<-- warehouse
 ```
 ## Use cases
 
 - [UC-1](use-cases/uc-1.md) Просмотр каталога продуктов.
 - [UC-2](use-cases/uc-2.md) Посмотр карточки продукта.
 - [UC-3](use-cases/uc-3.md) Изменение цены, описания продукта.
+- [UC-4](use-cases/uc-4.md) Добавление нового продукта.
+- [UC-5](use-cases/uc-5.md) Изменене остатков существующего продукта.
 
