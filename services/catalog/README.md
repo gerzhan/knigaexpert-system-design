@@ -4,7 +4,7 @@
 Позволяет отображать каталог товаров.
 Так же отвечает за отображение карточки товара.
 
-### Container diagram
+## Container diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
