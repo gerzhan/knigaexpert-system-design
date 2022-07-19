@@ -141,7 +141,7 @@ actor Покупатель
 actor Менеджер
 actor Курьер
 
-rectangle Minimarket {
+rectangle Shop {
   usecase (UC-1 Просмотр каталога продуктов) as UC1
   usecase (UC-2 Посмотр деталей продукта) as UC2
   usecase (UC-3 Добавление продукта в корзину) as UC3
