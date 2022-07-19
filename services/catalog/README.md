@@ -40,7 +40,8 @@ Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
 
 
 Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
-Rel_L(warehouse, catalog, "Базовая информация о продуктакх, остатки", "Async, Kafka")
+Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, Kafka")
+Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
 Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTPS")
 Rel(backoffice_bff, catalog, "Изменение цены, описания продукта", "HTTPS")
 }
@@ -61,7 +62,7 @@ rectangle Catalog {
   usecase (UC-2 Посмотр карточки продукта) as UC2
   usecase (UC-3 Изменение цены, описания продукта) as UC3
   usecase (UC-4 Добавление нового продукта) as UC4
-  usecase (UC-5 Изменене остатков существующего продукта) as UC5
+  usecase (UC-5 Изменение остатков существующего продукта) as UC5
 
   url of UC1 is [[use-cases/uc-1.md]]
   url of UC2 is [[use-cases/uc-2.md]]
@@ -81,10 +82,9 @@ UC4<-- warehouse
 UC5<-- warehouse
 ```
 ## Use cases
-
 - [UC-1](use-cases/uc-1.md) Просмотр каталога продуктов.
 - [UC-2](use-cases/uc-2.md) Посмотр карточки продукта.
 - [UC-3](use-cases/uc-3.md) Изменение цены, описания продукта.
 - [UC-4](use-cases/uc-4.md) Добавление нового продукта.
-- [UC-5](use-cases/uc-5.md) Изменене остатков существующего продукта.
+- [UC-5](use-cases/uc-5.md) Изменение остатков существующего продукта.
 

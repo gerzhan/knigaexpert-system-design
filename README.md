@@ -92,7 +92,7 @@ System_Boundary(microservices, "Microservices") {
   Rel(customer, ordering, "Делает заказ", "HTTPS")  
 
   Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
-  Rel(ordering, warehouse, "Информация о заказах", "Async, Kafka")
+  Rel(ordering, warehouse, "Создан новый заказ", "Async, Kafka")
   Rel(manager, warehouse, "Поставки, изменение остатков", "HTTPS")
 
   Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
