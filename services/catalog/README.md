@@ -61,9 +61,9 @@ rectangle Catalog {
   usecase (UC-2 Посмотр карточки продукта) as UC2
   usecase (UC-3 Изменение цены, описания продукта) as UC3
 
-  url of UC1 is [[uc-1.md]]
-  url of UC2 is [[uc-2.md]]
-  url of UC3 is [[uc-3.md]]
+  url of UC1 is [[use-cases/uc-1.md]]
+  url of UC2 is [[use-cases/uc-2.md]]
+  url of UC3 is [[use-cases/uc-3.md]]
 }
 
 cleint --> UC1
@@ -78,7 +78,7 @@ UC2<-- courier
 ```
 ## Use cases
 
-- [UC-1](uc-1.md) Просмотреть каталог продуктов.
-- [UC-2](uc-2.md) Посмотреть детали продукта.
-- [UC-3](uc-3.md) Добавить продукт в корзину.
+- [UC-1](use-cases/uc-1.md) Просмотреть каталог продуктов.
+- [UC-2](use-cases/uc-2.md) Посмотреть детали продукта.
+- [UC-3](use-cases/uc-3.md) Добавить продукт в корзину.
 
