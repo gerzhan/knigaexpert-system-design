@@ -36,8 +36,8 @@ Rel(manager, backoffice_app, "Изменение цены, описания пр
 Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
 Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
-Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTPS")
-Rel(backoffice_bff, catalog, "Изменение цены, описания продукта", "HTTPS")
+Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTP")
+Rel(backoffice_bff, catalog, "Изменение цены, описания продукта", "HTTP")
 }
 
 ```
