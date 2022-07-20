@@ -29,6 +29,8 @@ Rel(manager, backoffice_app, "Принятие поставки", "HTTPS")
 
 ' Services
 Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
+ContainerDb(warehouse_db, "Database", "Postgre SQL", "Схема склада, товары и т.п.")
+Rel(warehouse, warehouse_db, "Чтение / Запись", "Sync, JDBC")
 Rel(backoffice_bff, warehouse, "Принятие поставки", "HTTP")
 }
 
