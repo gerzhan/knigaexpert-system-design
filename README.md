@@ -17,7 +17,7 @@
 Для выявления границ микросервисов мы приняли решение использовать практику Event Storming
 ![Карта контекстов](img/es.jpg)
 
-### Context diagram
+### Landscape diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
@@ -44,7 +44,7 @@ Rel_R(customer, auth, "Авторизуется")
 }
 ```
 
-### Container diagram
+### Context diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
@@ -80,7 +80,7 @@ Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
 }
 ```
 
-### Microservices
+### Container diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
