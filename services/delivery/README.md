@@ -61,10 +61,10 @@ actor Курьер as courier
 actor Ordering as ordering << Система >>
 
 rectangle Delivery {
-  usecase (UC-1 Принятие заказа) as UC2
-  usecase (UC-2 Изменение статуса заказа на 'Доставлен') as UC4
-  usecase (UC-3 Получение статуса доставки) as UC1
-  usecase (UC-4 Назначение заказа) as UC3
+  usecase (UC-1 Принятие заказа) as UC1
+  usecase (UC-2 Изменение статуса заказа на 'Доставлен') as UC2
+  usecase (UC-3 Получение статуса доставки) as UC3
+  usecase (UC-4 Назначение заказа) as UC4
   
 
   url of UC1 is [[use-cases/uc-1.md]]
@@ -73,14 +73,14 @@ rectangle Delivery {
   url of UC4 is [[use-cases/uc-4.md]]
 }
 
-ordering -->UC2
+ordering --> UC1
 
-UC1 <-- client 
-UC1 <--manager
-UC2 --> UC3
+UC2 <-- courier
+UC4 --> courier
 
-UC3 -->courier
-UC4 <--courier
+client --> UC3 
+
+UC3 <--manager
 ```
 ## Use cases
 - [UC-1](use-cases/uc-1.md) Принятие заказа.

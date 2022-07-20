@@ -78,8 +78,6 @@ Container_Ext(auth, "Auth", "Keycloak, Java", "Сервер аутентифик
 Rel_R(shop_app, auth, "Аутентифициуется", "HTTPS")
 Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
 }
-
-
 ```
 
 ### Microservices (Container diagram)
@@ -116,6 +114,72 @@ System_Boundary(microservices, "Microservices") {
   Lay_L(microservices,manager)
 }
 ```
+
+### Use case diagrams
+
+```plantuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Покупатель as client
+actor Менеджер as manager
+actor Курьер as courier
+
+rectangle System {
+  ' auth
+  usecase (Аутентифицироваться) as UC1
+  usecase (Выйти) as UC2
+  ' catalog
+  usecase (Просмотр каталога продуктов) as UC3
+  usecase (Посмотр карточки продукта) as UC4
+  usecase (Изменение цены, описания продукта) as UC5
+  ' delivery
+  usecase (Получение статуса доставки) as UC6
+  usecase (Изменение статуса заказа на 'Доставлен') as UC7
+  usecase (Назначение заказа) as UC8
+  
+  ' ordering
+  usecase (Добавление товара в корзину) as UC9
+  usecase (Удаление товара из корзины) as UC10
+  usecase (Просмотр списка товаров в корзине) as UC11
+  usecase (Добавление адреса доставки) as UC12
+  usecase (Оплата заказа) as UC13
+
+  ' warehouse
+  usecase (Принятие поставки) as UC14
+}
+
+client --> UC1
+UC1 <-- manager
+UC1 <--courier
+
+client --> UC2
+UC2 <-- manager
+UC2 <--courier
+
+client --> UC3
+UC3 <-- manager
+
+client --> UC4
+UC4 <-- manager
+
+UC5 <-- manager
+
+client --> UC6
+UC6 <-- manager
+
+UC7 <--courier
+UC8 --> courier
+
+client --> UC9
+client --> UC10
+client --> UC11
+client --> UC12
+client --> UC13
+
+UC14 <-- manager
+```
+
 ## Системы
 ### Микросервисы
 | Bounded Context                           | Команда       | Сервис                            | Репозиторий                                                              | Что делает                                |
@@ -137,53 +201,5 @@ System_Boundary(microservices, "Microservices") {
 | Назначение                                | Команда             | Приложение                            | Репозиторий                                                                           | Что делает                            |
 | -----------                               | -----------         | -----------                           | -----------                                                                           | ----------                            |
 | Витрина интернет магазина                 | Alpha, Beta         | [shop](front-end/shop)                |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/shop)             | Каталог, карточка товара, корзина     |
-| Панель управления интернет магазином      | Alpha, Gamma, Delta  | [backoffice](front-end/backoffice)    |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)       | Управление каталогом, заказами        |
+| Панель управления интернет магазином      | Alpha, Gamma, Delta | [backoffice](front-end/backoffice)    |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)      | Управление каталогом, заказами       |
 | Приложение курьера                        | Gamma               | [courier](front-end/courier)          |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/courier)          | Принятие заказов                      |
-
-## Use case diagram
-```plantuml
-left to right direction
-skinparam packageStyle rectangle
-
-actor Покупатель
-actor Менеджер
-actor Курьер
-
-rectangle Shop {
-  usecase (UC-1 Просмотр каталога продуктов) as UC1
-  usecase (UC-2 Посмотр деталей продукта) as UC2
-  usecase (UC-3 Добавление продукта в корзину) as UC3
-  usecase (UC-4 Удаление продукта из корзины) as UC4
-  usecase (UC-5 Оформление заказа) as UC5
-  
-  usecase (UC-6 Получение статуса заказа)  as UC6
-  usecase (UC-7 Отмена заказа)  as UC7
-
-  usecase (UC-8 Сборка заказа)  as UC8
-  usecase (UC-9 Доставка заказа)  as UC9
-
-  Покупатель --> UC1
-  Покупатель --> UC2
-  Покупатель --> UC3
-  Покупатель --> UC4
-  Покупатель --> UC5
-  Покупатель --> UC6
-
-  UC6 <-- Менеджер
-  UC7 <-- Менеджер
-
-  UC8<-- Курьер  
-  UC9<-- Курьер
-}
-```
-
-<!-- - [UC-1](/use-cases/1-viewing-product-catalog.md) Просмотреть каталог продуктов.
-- [UC-2](use-cases/2-viewing-product-details.md) Посмотреть детали продукта.
-- [UC-3](use-cases/3-adding-product-to-the-cart.md) Добавить продукт в корзину.
-- [UC-4](use-cases/4-remove-product-from-shopping-cart.md) Удалить продукт из корзины.
-- [UC-5](use-cases/5-make-order.md) Оформить заказ.
-- [UC-6](use-cases/6-get-order-status.md) Посмотреть статус заказа.
-- [UC-7](use-cases/7-order-cancellation.md) Отменить заказ.
-- [UC-8](use-cases/8-order-assembly.md) Собрать заказ.
-- [UC-9](use-cases/9-order-delivery.md) Доставить заказ. -->
-
