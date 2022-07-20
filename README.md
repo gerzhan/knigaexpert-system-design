@@ -111,28 +111,29 @@ System_Boundary(microservices, "Microservices") {
 ```
 ## Системы
 ### Микросервисы
-| BoundedContext                            | Команда       | Сервис                                                                      | Что делает                                |
-| -----------                               | -----------   | -----------                                                                 | ----------                                |
-| Управление продуктовым каталогом          | Alpha         |[catalog](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)         | Каталог, Товары                           |
-| Управление процессом оформления заказа   | Beta          |[ordering](https://gitlab.com/microarch-ru/minimarket-csharp/ordering)       | Корзина, Оформление, процессинг заказа    |
-| Управление процессом сборки и доставки    | Gamma         |[delivery](https://gitlab.com/microarch-ru/minimarket-csharp/delivery)       | Курьеры, Процесс досставки                |
-| Управление складом                        | Delta         |[warehouse](https://gitlab.com/microarch-ru/minimarket-csharp/warehouse)     | Корзина, Оформление, процессинг           |
-| Управление процессом оплаты               | Omega         |[payment](https://gitlab.com/microarch-ru/minimarket-csharp/payment)         | Списание денег, бонусная программа        |
+| Bounded Context                           | Команда       | Сервис                            | Репозиторий                                                              | Что делает                                |
+| -----------                               | -----------   | -----------                       | -----------                                                              | ----------                                |
+| Управление продуктовым каталогом          | Alpha         | [catalog](services/catalog)       |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)       | Каталог, Товары                           |
+| Управление процессом оформления заказа    | Beta          | [ordering](services/catalog)      |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/ordering)      | Корзина, Оформление, процессинг заказа    |
+| Управление процессом сборки и доставки    | Gamma         | [delivery](services/delivery)     |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/delivery)      | Курьеры, Процесс досставки                |
+| Управление складом                        | Delta         | [warehouse](services/warehouse)   |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/warehouse)     | Корзина, Оформление, процессинг           |
+| Управление процессом оплаты               | Omega         | [payment](services/payment)       |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/payment)       | Списание денег, бонусная программа        |
 
 
 ### Платформенные сервисы и системы
-| Назначение                            | Команда       | Приложение                                                           | Что делает                                  |
-| -----------                           | -----------   | -----------                                                          | ----------                                |
-| Безопасность, контроль доступа        | Core          |[auth](https://gitlab.com/microarch-ru/minimarket-csharp/auth)        | Регистрация, аутентификация, авторизация  |
+| Назначение                                | Команда       | Сервис                            | Репозиторий                                                              | Что делает                                |
+| -----------                               | -----------   | -----------                       | ----------                                                               | ----------                                |
+| Безопасность, контроль доступа            | Platform      | [auth](services/auth)             |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/auth)          | Регистрация, аутентификация, авторизация  |
 
 
 ### Фронтенд
-| Назначение                            | Команда       | Приложение                                                                            | Что делает               |
-| -----------                           | -----------   | -----------                                                                           | ----------               |
-| Витрина интернет магазина             | Core          |[shop](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/shop)       | Отображает статус заказа |
-| Панель управления интернет магазином  | Core          |[backoffice](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)   | Отображает статус заказа |
+| Назначение                            | Команда       | Приложение                            | Репозиторий                                                                           | Что делает                            |
+| -----------                           | -----------   | -----------                           | -----------                                                                           | ----------                            |
+| Витрина интернет магазина             | Core          | [shop](front-end/shop)                |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/shop)             | Каталог, карточка товара, корзина     |
+| Панель управления интернет магазином  | Core          | [backoffice](front-end/backoffice)    |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)       | Управление каталогом, заказами        |
+| Приложение курьера                    | Core          | [courier](front-end/courier)          |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/courier)          | Принятие заказов                      |
 
-## Варианты использования
+## Use case diagram
 ```plantuml
 left to right direction
 skinparam packageStyle rectangle
@@ -169,7 +170,7 @@ rectangle Shop {
 }
 ```
 
-- [UC-1](/use-cases/1-viewing-product-catalog.md) Просмотреть каталог продуктов.
+<!-- - [UC-1](/use-cases/1-viewing-product-catalog.md) Просмотреть каталог продуктов.
 - [UC-2](use-cases/2-viewing-product-details.md) Посмотреть детали продукта.
 - [UC-3](use-cases/3-adding-product-to-the-cart.md) Добавить продукт в корзину.
 - [UC-4](use-cases/4-remove-product-from-shopping-cart.md) Удалить продукт из корзины.
@@ -177,5 +178,5 @@ rectangle Shop {
 - [UC-6](use-cases/6-get-order-status.md) Посмотреть статус заказа.
 - [UC-7](use-cases/7-order-cancellation.md) Отменить заказ.
 - [UC-8](use-cases/8-order-assembly.md) Собрать заказ.
-- [UC-9](use-cases/9-order-delivery.md) Доставить заказ.
+- [UC-9](use-cases/9-order-delivery.md) Доставить заказ. -->
 
