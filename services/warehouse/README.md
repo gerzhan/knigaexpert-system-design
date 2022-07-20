@@ -29,7 +29,7 @@ Rel(manager, backoffice_app, "Принятие поставки", "HTTPS")
 
 ' Services
 Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
-Rel(backoffice_bff, warehouse, "Принятие поставки", "HTTPS")
+Rel(backoffice_bff, warehouse, "Принятие поставки", "HTTP")
 }
 
 Container_Ext(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
