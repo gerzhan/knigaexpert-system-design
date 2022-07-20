@@ -191,7 +191,7 @@ UC14 <-- manager
 | Управление процессом оплаты               | Omega         | [payment](services/payment)       |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/payment)       | Списание денег, бонусная программа        |
 
 
-### Платформенные сервисы и системы
+### Платформенные сервисы
 | Назначение                                | Команда       | Сервис                            | Репозиторий                                                              | Что делает                                |
 | -----------                               | -----------   | -----------                       | ----------                                                               | ----------                                |
 | Безопасность, контроль доступа            | Platform      | [auth](services/auth)             |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/auth)          | Регистрация, аутентификация, авторизация  |
