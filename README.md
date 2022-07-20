@@ -137,7 +137,7 @@ System_Boundary(microservices, "Microservices") {
 | Назначение                                | Команда             | Приложение                            | Репозиторий                                                                           | Что делает                            |
 | -----------                               | -----------         | -----------                           | -----------                                                                           | ----------                            |
 | Витрина интернет магазина                 | Alpha, Beta         | [shop](front-end/shop)                |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/shop)             | Каталог, карточка товара, корзина     |
-| Панель управления интернет магазином      | Alpha, Gamma,Delta  | [backoffice](front-end/backoffice)    |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)       | Управление каталогом, заказами        |
+| Панель управления интернет магазином      | Alpha, Gamma, Delta  | [backoffice](front-end/backoffice)    |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/backoffice)       | Управление каталогом, заказами        |
 | Приложение курьера                        | Gamma               | [courier](front-end/courier)          |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/front-end/courier)          | Принятие заказов                      |
 
 ## Use case diagram
