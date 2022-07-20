@@ -33,12 +33,6 @@ Rel(backoffice_app, backoffice_bff, "Изменение цены, описани
 Rel(manager, backoffice_app, "Изменение цены, описания продукта", "HTTPS")
 
 
-' Services
-Container_Ext(auth, "Auth", "Keycloak, Java", "Сервер аутентификации")
-Rel_R(shop_app, auth, "Аутентифициуется", "HTTPS")
-Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
-
-
 Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
 Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
