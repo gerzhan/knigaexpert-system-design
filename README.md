@@ -80,7 +80,7 @@ Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
 }
 ```
 
-### Microservices (Container diagram)
+### Microservices
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
@@ -115,7 +115,7 @@ System_Boundary(microservices, "Microservices") {
 }
 ```
 
-### Use case diagrams
+### Use case diagram
 
 ```plantuml
 left to right direction
