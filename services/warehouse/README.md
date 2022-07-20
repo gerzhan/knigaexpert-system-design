@@ -37,7 +37,7 @@ Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, 
 Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
 
 Container_Ext(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
-Rel(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")
+Rel_L(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")
 
 ```
 
