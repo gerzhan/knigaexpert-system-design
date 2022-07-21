@@ -76,13 +76,13 @@ Rel(manager, backoffice_app, "Управляет интернет магазин
 ' Сourier App
 Container(courier_app, "Courier App", "Mobile, React Native", "Приложение курьера")  
 Container(courier_bff, "Courier BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
-Rel_U(courier_app, courier_bff, "Изменить статус доставки", "HTTPS")
-Rel_U(courier, courier_app, "Изменить статус доставки", "HTTPS")
+Rel_L(courier_app, courier_bff, "Изменить статус доставки", "HTTPS")
+Rel_L(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
 Container(microservices, "Microservices", ".Net, Docker", "Группа микросервисов")
 Rel(shop_bff, microservices, "Использует", "HTTPS")
 Rel(backoffice_bff, microservices, "Использует", "HTTPS")
-Rel_U(courier_bff, microservices, "Использует", "HTTPS")
+Rel_L(courier_bff, microservices, "Использует", "HTTPS")
 
 ' Services
 Container_Ext(auth, "Auth", "Keycloak, Java", "Сервер аутентификации")
