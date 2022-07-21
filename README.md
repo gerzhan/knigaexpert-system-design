@@ -19,6 +19,8 @@
 ![Карта контекстов](img/es.jpg)
 
 ### Context diagram
+После выделения сервисов было принято решение описать архитектуру в виде нотации C4 model.
+Данная диаграмма описывает отношение пользователей и системы.
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
@@ -47,7 +49,9 @@ Rel_L(customer, auth, "Авторизуется")
 }
 ```
 
-### Landscape diagram
+### Container diagram
+Данная диаграмма описывает взаимодействие пользователей и ИТ систем.
+Микросервисы сгруппированы.
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
@@ -92,7 +96,7 @@ Rel_L(courier_bff, auth, "Аутентифициуется", "HTTPS")
 }
 ```
 
-### Container diagram
+### Микросервисы
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
@@ -130,7 +134,6 @@ System_Boundary(microservices, "Microservices") {
 ```
 
 ### Use case diagram
-
 ```plantuml
 left to right direction
 skinparam packageStyle rectangle
