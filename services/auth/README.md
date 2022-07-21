@@ -42,7 +42,7 @@ Rel_U(courier, courier_app, "Изменить статус доставки", "H
 ' Services
 Container(auth, "Auth", "Keycloak, Java", "Сервер аутентификации")
 ContainerDb(auth_db, "Database", "Postgre SQL", "Пользователи, роли и т.п.")
-Rel(auth, auth_db, "Чтение / Запись", "Sync, JDBC")
+Rel(auth, auth_db, "Чтение / Запись", "Sync, TCP")
 Rel(shop_app, auth, "Аутентифициуется, получает JWT токен", "HTTPS")
 Rel(backoffice_app, auth, "Аутентифициуется, получает JWT токен", "HTTPS")
 Rel_R(shop_bff, auth, "Получает cert.pub раз в 30 мин", "HTTPS")

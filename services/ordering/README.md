@@ -26,7 +26,7 @@ Rel(customer, shop_app, "Формирует корзину, делает зак�
 
 Container(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
 ContainerDb(ordering_db, "Database", "Postgre SQL", "Корзина, товары и т.п.")
-Rel(ordering, ordering_db, "Чтение / Запись", "Sync, JDBC")
+Rel(ordering, ordering_db, "Чтение / Запись", "Sync, TCP")
 Rel(shop_bff, ordering, "Формирует корзину, делает заказ", "HTTPS")
 }
 

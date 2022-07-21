@@ -43,7 +43,7 @@ Rel_U(courier, courier_app, "Изменить статус доставки", "H
 
 Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
 ContainerDb(delivery_db, "Database", "Postgre SQL", "Курьеры, заказы и т.п.")
-Rel(delivery, delivery_db, "Чтение / Запись", "Sync, JDBC")
+Rel(delivery, delivery_db, "Чтение / Запись", "Sync, TCP")
 Rel_R(ordering, delivery, "Cоздан новый заказ", "Async, Kafka")
 Rel(backoffice_bff, delivery, "Получить статус доставки", "HTTPS")
 Rel(shop_bff, delivery, "Получить статус доставки", "HTTPS")

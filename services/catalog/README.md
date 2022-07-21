@@ -35,7 +35,7 @@ Rel(manager, backoffice_app, "Изменение цены, описания пр
 
 Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
 ContainerDb(catalog_db, "Database", "Postgre SQL", "Категории, товары и т.п.")
-Rel(catalog, catalog_db, "Чтение / Запись", "Sync, JDBC")
+Rel(catalog, catalog_db, "Чтение / Запись", "Sync, TCP")
 Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
 Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTP")

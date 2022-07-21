@@ -9,7 +9,7 @@
 От CEO нам была поставлена цель - спроектировать интернет магазин с использованием микросервисной архитектуры.
 Для этого нам был предоставлен набор User Stories с описанием бизнеса компании, а также макеты интерфейса для лучшего понимания задачи.
 
-Наша задача - провести декомпозицию системы на микросервисы и реализовать.
+Наша задача - провести декомпозицию системы на микросервисы и реализовать их в коде.
 
 ## Решение
 
@@ -18,7 +18,7 @@
 После проведения Event Storming мы выделили следующие Bounded Context: 
 ![Карта контекстов](img/es.jpg)
 
-### Landscape diagram
+### Context diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
@@ -30,22 +30,24 @@ LAYOUT_WITH_LEGEND()
 
 Person(customer, Покупатель, "Совершает покупки")
 
-Enterprise_Boundary(shop_boundary, "Shop") {
+System_Boundary(shop_boundary, "Shop") {
 Person(manager, Менеджер, "Управляет интернет магазином")
+Person(courier, Курьер, "Доставляет заказ")
 
 ' Shop
 System(shop, "Shop", "Интернет магазин")
-Rel(customer, shop, "Делает покупки")
-Rel_U(manager, shop, "Управляет")
+Rel_D(customer, shop, "Делает покупки")
+Rel_L(manager, shop, "Управляет магазином")
+Rel(shop, courier, "Назначает заказ")
 
-' Services
+' Auth
 System_Ext(auth, "Auth", "Сервер аутентификации")
 Rel_L(shop, auth, "Использует")
-Rel_R(customer, auth, "Авторизуется")
+Rel_L(customer, auth, "Авторизуется")
 }
 ```
 
-### Context diagram
+### Landscape diagram
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
@@ -57,27 +59,36 @@ LAYOUT_WITH_LEGEND()
 
 Person(customer, Покупатель, "Совершает покупки")
 Person(manager, Менеджер, "Управляет интернет магазином")
+Person(courier, Курьер, "Доставляет заказ")
 System_Boundary(shop, "Shop") {
 ' Shop
 Container(shop_app, "Shop", "Web, React", "Витрина интернет магазина")
-Container_Ext(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
+Container(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
 Rel(shop_app, shop_bff, "Использует", "HTTPS")
 Rel(customer, shop_app, "Делает покупки", "HTTPS")
 
 ' Backoffice
 Container(backoffice_app, "Backoffice", "Web, React", "Панель управления интернет магазином")  
-Container_Ext(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
+Container(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
 Rel(backoffice_app, backoffice_bff, "Использует", "HTTPS")
 Rel(manager, backoffice_app, "Управляет интернет магазином", "HTTPS")
+
+' Сourier App
+Container(courier_app, "Courier App", "Mobile, React Native", "Приложение курьера")  
+Container(courier_bff, "Courier BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
+Rel_U(courier_app, courier_bff, "Изменить статус доставки", "HTTPS")
+Rel_U(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
 Container(microservices, "Microservices", ".Net, Docker", "Группа микросервисов")
 Rel(shop_bff, microservices, "Использует", "HTTPS")
 Rel(backoffice_bff, microservices, "Использует", "HTTPS")
+Rel_U(courier_bff, microservices, "Использует", "HTTPS")
 
 ' Services
 Container_Ext(auth, "Auth", "Keycloak, Java", "Сервер аутентификации")
 Rel_R(shop_app, auth, "Аутентифициуется", "HTTPS")
 Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
+Rel_L(courier_bff, auth, "Аутентифициуется", "HTTPS")
 }
 ```
 
@@ -93,26 +104,28 @@ LAYOUT_WITH_LEGEND()
 
 Person(customer, Покупатель, "Совершает покупки")
 Person(manager, Менеджер, "Управляет интернет магазином")
+Person(courier, Курьер, "Доставляет заказ")
+
 System_Boundary(microservices, "Microservices") {
   Container(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
   Rel(customer, ordering, "Делает заказ", "HTTPS")  
 
   Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
-  Rel(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")
+  Rel_R(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")
   Rel(manager, warehouse, "Поставки, изменение остатков", "HTTPS")
 
   Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
   Rel(warehouse, catalog, "Товары, остатки", "Async, Kafka")
   Rel(customer, catalog, "Витрина, карточка товара", "HTTPS")
-  Rel_U(manager, catalog, "Изменение цен и описания", "HTTPS")
+  Rel(manager, catalog, "Изменение цен и описания", "HTTPS")
 
   Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
-  Rel_R(ordering, payment, "Оплата заказа", "Sync, gRPC")
+  Rel(ordering, payment, "Оплата заказа", "Sync, gRPC")
 
   Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
   Rel(ordering, delivery, "Cоздан новый заказ", "Async, Kafka")
-  Rel_U(manager, delivery, "Получить статус доставки", "HTTPS")
-  Lay_L(microservices,manager)
+  Rel(manager, delivery, "Получить статус доставки", "HTTPS")
+  Rel(delivery,courier,"Назначает заказ")
 }
 ```
 

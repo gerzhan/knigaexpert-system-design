@@ -18,7 +18,7 @@ System_Boundary(c1, "Customer Information") {
 
 Rel_D(customer, app, "Updates his profile using", "HTTPS")
 Rel(app, customer_service, "Updates customer information using", "JSON/HTTPS")
-Rel_R(customer_service, customer_db, "Stores data in", "JDBC")
+Rel_R(customer_service, customer_db, "Stores data in", "TCP")
 
 RelIndex_D($index-1, customer_service, message_bus, "Sends customer update events to", "async")
 RelIndex_U($index-2, customer_service, app, "Confirm update to", "async")
