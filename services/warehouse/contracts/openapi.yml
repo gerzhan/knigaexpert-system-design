@@ -6,7 +6,7 @@ info:
 paths:
   /api/v1/goods:
     get:
-      summary: Получить товары
+      summary: Получить все товары доступные на складе
       description: |
         Позволяет получить все товары доступные на складе
       operationId: getGoods

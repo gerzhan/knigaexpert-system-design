@@ -163,7 +163,7 @@ rectangle System {
   usecase (Оплата заказа) as UC13
 
   ' warehouse
-  usecase (Принятие поставки) as UC14
+  usecase (Принять поставку) as UC14
 }
 
 client --> UC1

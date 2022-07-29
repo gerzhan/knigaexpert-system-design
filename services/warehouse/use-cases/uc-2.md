@@ -1,4 +1,4 @@
-# UC-2 Снижение остатков
+# UC-2 Снизить остатки
 
 ```plantuml
 participant "ordering" as ordering

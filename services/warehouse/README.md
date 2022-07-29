@@ -25,15 +25,15 @@ System_Boundary(boundary, "Warehouse") {
 ' Backoffice
 Container(backoffice_app, "Backoffice", "Web, React", "Панель управления интернет магазином")  
 Container_Ext(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
-Rel(backoffice_app, backoffice_bff, "Принятие поставки", "HTTPS")
-Rel(manager, backoffice_app, "Принятие поставки", "HTTPS")
+Rel(backoffice_app, backoffice_bff, "Принять поставку", "HTTPS")
+Rel(manager, backoffice_app, "Принять поставку", "HTTPS")
 
 
 ' Services
 Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
 ContainerDb(warehouse_db, "Database", "Postgre SQL", "Схема склада, товары и т.п.")
 Rel(warehouse, warehouse_db, "Чтение / Запись", "Sync, TCP")
-Rel(backoffice_bff, warehouse, "Принятие поставки", "HTTP")
+Rel(backoffice_bff, warehouse, "Принять поставку", "HTTP")
 }
 
 Container_Ext(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
@@ -85,18 +85,31 @@ actor Менеджер as manager
 actor Ordering as ordering << Система >>
 
 rectangle Warehouse {
-  usecase (UC-1 Принятие поставки) as UC1
-  usecase (UC-2 Снижение остатков) as UC2
+  usecase (UC-1 Принять поставку) as UC1
+  usecase (UC-3 Получить все товары) as UC2
+  usecase (UC-4 Получить информацию о товаре) as UC3
+  usecase (UC-5 Списать товар) as UC4
+  usecase (UC-2 Снизить остатки) as UC5
 
   url of UC1 is [[use-cases/uc-1.md]]
   url of UC2 is [[use-cases/uc-2.md]]
+  url of UC3 is [[use-cases/uc-3.md]]
+  url of UC4 is [[use-cases/uc-4.md]]
+  url of UC5 is [[use-cases/uc-5.md]]
 }
 
 manager --> UC1
+manager --> UC2
+manager --> UC3
+manager --> UC4
 
-UC2<-- ordering
+UC5<-- ordering
 ```
 ## Use cases
-- [UC-1](use-cases/uc-1.md) Принятие поставки.
-- [UC-2](use-cases/uc-2.md) Снижение остатков.
+- [UC-1](use-cases/uc-1.md) Принять поставку.
+- [UC-2](use-cases/uc-2.md) Получить все товары.
+- [UC-3](use-cases/uc-1.md) Получить информацию о товаре.
+- [UC-4](use-cases/uc-2.md) Списать товар.
+- [UC-5](use-cases/uc-1.md) Снизить остатки.
+
 
