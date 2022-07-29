@@ -1,35 +1,60 @@
-```plantuml
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Dynamic.puml
+# Open API (swagger)
 
-LAYOUT_TOP_DOWN()
-LAYOUT_WITH_LEGEND()
+## REST API
+Eсли с REST API не работали, то прочитайте статью
+- Быстро - https://restapitutorial.ru/lessons/restquicktips.html
+- Долго (но полно) - https://www.oreilly.com/library/view/rest-api-design/9781449317904/
 
-Person(customer, Customer, "A customer")
-System_Boundary(c1, "Customer Information") {
-    Container(app, "Customer Application", "Javascript, Angular", "Allows customers to manage their profile")
-    Container(customer_service, "Customer Service", "Java, Spring Boot", "The point of access for customer information")
-    Container(message_bus, "Message Bus", "RabbitMQ", "Transport for business events")
-    Container(reporting_service, "Reporting Service", "Ruby", "Creates normalised data for reporting purposes")
-    Container(audit_service, "Audit Service", "C#/.NET", "Provides organisation-wide auditing facilities")
-    ContainerDb(customer_db, "Customer Database", "Oracle 12c", "Stores customer information")
-    ContainerDb(reporting_db, "Reporting Database", "MySQL", "Stores a normalized version of all business data for ad hoc reporting purposes")
-    Container(audit_store, "Audit Store", "Event Store", "Stores information about events that have happened")
-}
+## Open API (Swagger)
+Прочитайте базовый туториал по нотации Open API, если что-то не понятно просто пропустите и идите дальше. Для базового примера нам достаточно простых вещей. 
+https://swagger.io/docs/specification/basic-structure/ (начните отсюда и прочтайте все статьи в разделе Open API Guide)
 
-Rel_D(customer, app, "Updates his profile using", "HTTPS")
-Rel(app, customer_service, "Updates customer information using", "JSON/HTTPS")
-Rel_R(customer_service, customer_db, "Stores data in", "TCP")
+## Swagger Hub
+У Swagger есть продукт Swagger Hub. Основная идея его - это единая среда для описания API с помощью Open API и хранение того что получилось в облаке. Но можно просто хранить спеку в Git. К примеру вот так [openapi.yml](/services/warehouse/contracts/openapi.yml)
 
-RelIndex_D($index-1, customer_service, message_bus, "Sends customer update events to", "async")
-RelIndex_U($index-2, customer_service, app, "Confirm update to", "async")
-increment()
+Нам в целях обучения он интересен тем, что когда вы будите править файл, то он сразу будет показывать ошибки и результат в виде Swagger интерфейса
 
-RelIndex_L($index-1, message_bus, reporting_service, "Sends customer update events to", "async")
-increment()
-RelIndex($index-1, reporting_service, reporting_db, "Stores data in")
+Надо:
+- Зарегистрироваться https://try.smartbear.com/
+- Войти
+- Зайти в проект Swagger Petstore
+- Вы увидите такой интерфейс
+![swagger-hub](/img/swagger-hub.PNG)
 
-setIndex(5)
-RelIndex_R($index-2, message_bus, audit_service, "Sends customer update events to", "async")
-increment()
-RelIndex($index-2, audit_service, audit_store, "Stores events in")
-```
+## Работа со спецификацией
+- Изучите структуру файла (вспомните что тут для чего, вы ранее читали туториал, поэтому должно быть все знакомо)
+
+- Попробуйте поменять что-то:
+    - Переведите на русский язык базовое описание, заполните про свою компанию, удалите лишнее (посмотрите что поменялось в Swagger) 
+    - Переведите на русский язык все decription (посмотрите что поменялось в Swagger)
+    - Добавьте в Pets, NewPets поле Owner(хозяин) и сделайте его обязательным
+    - Добавьте новый метод - POST pets/{id}/buy. В Request будет только одно обязательное - "Price", тип определите сами (https://swagger.io/docs/specification/media-types/)
+    - Добавьте новый метод и модель данных
+        - метод - POST owners (создать хозяина).
+        - модель - Owner
+        - убедитесь что нет ошибок и метод отображается в Swagger
+
+## API Design First
+Основная идея сначала описывать спецификаицию а потом писать код отражена тут - https://blog.stoplight.io/api-first-vs.-api-design-first-a-comprehensive-guide ( API Design First)
+
+
+Поскольку API вы уже описали спецификацию, то теперь мы можем сгенерировать:
+- сервер - он будет реализовывать методы, которые вы определили в Open API (Swagger). К примеру, это может быть сервис PetStore.
+- клиент - он будет потреблять методы, которые вы определили в Open API (Swagger). К примеру, это может быть Web приложение.
+
+В правом верхренм углу нажмите Export -> Server Stub и выберите либо знакомый вам язык, либо язык на котором разрабатывают ваши разработчики.
+При нажатии - сгенерируется и скачается код. Откройте и изучите его, вы должны там найти сгенерированные методы.
+
+Повторите аналогичную операцию только с Client SDK
+
+## API Design First (быстрая перегенерация кода при изменениях)
+- Измените path /pets на /animals в спецификации Open API (Swagger), убедитесь что нет ошибок.
+- Повторите 4 пункт и убедитесь что были сгенерированны методы с другим path
+
+
+## Попробуем создать API с нуля
+- Изучите Use-case диаграмму https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/tree/main/services/ordering#use-case-diagram
+- Реализуйте API методы в Open API (Swagger)
+
+Как будет готово, скопируйте то что вышло в файл openapi.yml и вышлите мне. 
+Я сгенерирую код, это будет проверкой что все корректно.
