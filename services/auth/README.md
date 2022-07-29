@@ -99,6 +99,7 @@ UC3 <-- courier_bff
 
 ```
 ## Use cases
+
 - [UC-1](use-cases/uc-1.md) Аутентифицироваться.
 - [UC-2](use-cases/uc-2.md) Выйти.
 - [UC-3](use-cases/uc-3.md) Получить cert.pub.

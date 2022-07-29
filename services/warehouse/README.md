@@ -46,7 +46,7 @@ Rel_L(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")
 ```
 
 ## Component diagram
-Диаграмма компонентов показывает, из каких «компонентов» состояит контейнер, что представляет собой каждый из этих компонентов, его обязанности, технологии и детали реализации.
+Диаграмма компонентов показывает из каких «компонентов» состояит контейнер, что представляет собой каждый из этих компонентов, его обязанности, технологии и детали реализации.
 
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
@@ -76,6 +76,36 @@ Rel(ma, sign, "Uses", "JSON/HTTPS")
 Rel(ma, accounts, "Uses", "JSON/HTTPS")
 ```
 
+## Code diagram
+Диаграмма классов показывает общую структуру иерархии классов системы, их коопераций, атрибутов, методов, интерфейсов и взаимосвязей между ними.
+
+```plantuml
+package "Classic Collections" #DDDDDD {
+  Object <|-- ArrayList
+}
+
+package net.sourceforge.plantuml {
+  Object <|-- Demo1
+  Demo1 *- Demo2
+}
+```
+
+## ER diagram
+Диаграмма отношений сущностей это визуальное представление базы данных, которое показывает, как связаны элементы внутри. Диаграмма ER состоит из двух типов объектов — сущностей и отношений.
+
+```plantuml
+entity Goods {
+  * id
+  * title
+  * description
+  * quantity
+}
+entity Warehouse {
+  * id
+  * name
+}
+Goods }o--|| Warehouse
+```
 ## Use case diagram
 Диаграмма вариантов использования показывает, какой функционал разрабатываемой программной системы доступен каждой группе пользователей.
 
