@@ -1,0 +1,137 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger Warehouse
+  description: REST API методы
+paths:
+  /api/v1/goods:
+    get:
+      summary: Получить все товары
+      description: |
+        Позволяет получить все товары доступные на складе
+      operationId: getGoods
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Good'
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Принять поставку
+      description: Позволяет принять новые товары на склад
+      operationId: addGood
+      requestBody:
+        description: Товар
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewGood'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Good'
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/goods/{id}:
+    get:
+      summary: Получить информацию о товаре
+      description: Позволяет получить информацию о товаре по его идентификатору
+      operationId: getGoodById
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор товара
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Good'
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/goods/{id}/write-off:
+    post:
+      summary: Списать товар
+      description: Позволяет списать товар по идентификатору
+      operationId: writeOffGood
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный ответ
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Good:
+      allOf:
+        - $ref: '#/components/schemas/NewGood'
+        - required:
+          - id
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Идентификатор
+    NewGood:
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: Название
+        description:
+          type: string
+          description: Описание
+        quantity:
+          type: integer
+          format: int32
+          description: Количество
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: Код ошибки
+        message:
+          type: string
+          description: Текст ошибки
