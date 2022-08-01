@@ -117,31 +117,45 @@ actor Менеджер as manager
 actor Ordering as ordering << Система >>
 
 rectangle Warehouse {
-  usecase (UC-1 Принять поставку) as UC1
-  usecase (UC-3 Получить все товары) as UC2
-  usecase (UC-4 Получить информацию о товаре) as UC3
-  usecase (UC-5 Списать товар) as UC4
-  usecase (UC-2 Снизить остатки) as UC5
-
+  usecase (UC-1 Снизить остатки) as UC1
+  usecase (UC-2 Принять поставку) as UC2
+  usecase (UC-3 Получить все товары) as UC3
+  usecase (UC-4 Получить информацию о товаре) as UC4
+  usecase (UC-5 Списать товар) as UC5
+  usecase (UC-6 Переместить товар) as UC6
+  usecase (UC-7 Получить схему склада) as UC7
+  usecase (UC-8 Найти место хранения товара) as UC8
+  
   url of UC1 is [[use-cases/uc-1.md]]
   url of UC2 is [[use-cases/uc-2.md]]
   url of UC3 is [[use-cases/uc-3.md]]
   url of UC4 is [[use-cases/uc-4.md]]
   url of UC5 is [[use-cases/uc-5.md]]
+  url of UC6 is [[use-cases/uc-6.md]]
+  url of UC7 is [[use-cases/uc-7.md]]
+  url of UC8 is [[use-cases/uc-8.md]]
+  
 }
+
+UC1<-- ordering
 
 manager --> UC1
 manager --> UC2
 manager --> UC3
 manager --> UC4
-
-UC5<-- ordering
+manager --> UC5
+manager --> UC6
+manager --> UC7
+manager --> UC8
 ```
 **Use cases**
-- [UC-1](use-cases/uc-1.md) Принять поставку.
-- [UC-2](use-cases/uc-2.md) Получить все товары.
-- [UC-3](use-cases/uc-1.md) Получить информацию о товаре.
-- [UC-4](use-cases/uc-2.md) Списать товар.
-- [UC-5](use-cases/uc-1.md) Снизить остатки.
+- [UC-1](use-cases/uc-1.md) Снизить остатки.
+- [UC-2](use-cases/uc-2.md) Принять поставку.
+- [UC-3](use-cases/uc-3.md) Получить все товары.
+- [UC-4](use-cases/uc-4.md) Получить информацию о товаре.
+- [UC-5](use-cases/uc-5.md) Списать товар.
+- [UC-6](use-cases/uc-6.md) Переместить товар.
+- [UC-7](use-cases/uc-7.md) Получить схему склада.
+- [UC-8](use-cases/uc-8.md) Найти место хранения товара.
 
 

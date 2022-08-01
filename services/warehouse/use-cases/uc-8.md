@@ -1,13 +1,16 @@
-# UC-1 Снизить остатки
+# UC-8 Найти место хранения товара
 Диаграмма последовательности показывает жизненный цикл объекта на единой временной оси, взаимодействие с другими обьектами и актерами информационной системы в рамках одного варианта использования.
 
 ```plantuml
-participant "ordering" as ordering
-queue "orders" as orders_queue
+actor Менеджер as manager
 participant "warehouse" as warehouse
 
-alt Успешный случай
-ordering -> orders_queue: Cоздан новый заказ
-note over orders_queue: order_created {id,items[{id, quantity},{id, quantity}]}
-end
+
+manager -> warehouse: найти место хранения товара
+note over warehouse: [GET] api/v1/warehouse/find?good_id={id}
+
+manager <-- warehouse: полки с товаром
+note over warehouse
+200 Ok
+end note
 ```
