@@ -89,7 +89,7 @@ package "Warehouse Aggregate"  #DDDDDD {
     + Places[] Find(uuid goodId)
     + void Move(Place from, Place to, Item item)
     + void Add(Item item)
-    + void TakeItem(Item item)
+    + void Take(Item item)
   }
   
   Class Place <Entity>
@@ -99,12 +99,12 @@ package "Warehouse Aggregate"  #DDDDDD {
     - Item item
 
     + Place(Location location)  
-    + void AddItem(Item item)
-    + void TakeItem(Item item)
+    + void Add(Item item)
+    + void Take(Item item)
     + void Move(Place to, Item item)
   }
 
-  Class Item <Entity>{
+  Class Item <Value Object>{
     - uuid goodId
     - int weight
     - int quantity     
@@ -112,7 +112,7 @@ package "Warehouse Aggregate"  #DDDDDD {
 
   Class Location <Value Object> {
     - int row
-    - int shelf    
+    - int shelf 
   }
 
   Warehouse *- Place
