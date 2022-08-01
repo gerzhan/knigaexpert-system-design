@@ -80,13 +80,56 @@ Rel(ma, accounts, "Uses", "JSON/HTTPS")
 > Диаграмма классов показывает общую структуру иерархии классов системы, их коопераций, атрибутов, методов, интерфейсов и взаимосвязей между ними.
 
 ```plantuml
-package "Classic Collections" #DDDDDD {
-  Object <|-- ArrayList
+package "Warehouse Aggregate"  #DDDDDD {
+  Class Warehouse <Aggregate>
+  {
+    - Place[] places
+
+    + Warehouse()
+    + Places[] Find(uuid goodId)
+    + void Move(Place from, Place to, Item item)
+    + void Add(Item item)
+    + void TakeItem(Item item)
+  }
+  
+  Class Place <Entity>
+  {
+    - MaximumAvailableWeight = 50
+    - Location location
+    - Item item
+
+    + Place(Location location)  
+    + void AddItem(Item item)
+    + void TakeItem(Item item)
+    + void Move(Place to, Item item)
+  }
+
+  Class Item <Entity>{
+    - uuid goodId
+    - int weight
+    - int quantity     
+  }
+
+  Class Location <Value Object> {
+    - int row
+    - int shelf    
+  }
+
+  Warehouse *- Place
+  Place *- Location
+  Place *-- Item  
 }
 
-package net.sourceforge.plantuml {
-  Object <|-- Demo1
-  Demo1 *- Demo2
+package "Good Aggregate" #DDDDDD {
+  Class Good <Aggregate>
+  {
+    - uuid goodId
+    - string title
+    - string description
+    - int weight
+    + Good(string title, string description, int weight)
+  }
+  Item *-- Good
 }
 ```
 
