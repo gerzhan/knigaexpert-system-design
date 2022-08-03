@@ -9,7 +9,6 @@
 
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
 
@@ -28,7 +27,7 @@ Rel(shop_bff, ordering_ext, "Формирует корзину, делает з�
 
 System_Boundary(boundary, "Payment") {
   !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/payment/normal.puml
-  Rel_R(ordering, payment, "Оплата заказа", "Sync, gRPC")
+  Rel_R(ordering_ext, payment, "Оплата заказа", "Sync, gRPC")
 }
 ```
 
