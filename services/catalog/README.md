@@ -24,6 +24,7 @@ LAYOUT_WITH_LEGEND()
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice-gateway.puml
 
 
+
 Container_Ext(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
 
 System_Boundary(boundary, "Catalog") {
@@ -36,6 +37,8 @@ Rel(backoffice_app, backoffice_bff, "Изменение цены, описани
 Rel(manager, backoffice_app, "Изменение цены, описания продукта", "HTTPS")
 
 ' Service
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog_db.puml
 Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
 Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTP")
