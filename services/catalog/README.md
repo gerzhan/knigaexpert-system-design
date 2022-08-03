@@ -10,14 +10,14 @@
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/manager.puml
+
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
 
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
-
-Person(customer, Покупатель, "Совершает покупки")
-Person(manager, Менеджер, "Управляет интернет магазином")
 
 Container_Ext(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
 
