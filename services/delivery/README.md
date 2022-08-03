@@ -16,13 +16,9 @@ skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog/ext.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog/normal.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog/db.puml
-
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
-
-
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/manager.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/courier.puml
 
 System_Boundary(boundary, "Delivery") {
 ' Shop
@@ -42,13 +38,15 @@ Rel_U(courier, courier_app, "Изменить статус доставки", "H
 
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/delivery/normal.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/delivery/db.puml
-
-Rel_R(ordering, delivery, "Cоздан новый заказ", "Async, Kafka")
 Rel(backoffice_bff, delivery, "Получить статус доставки", "HTTPS")
 Rel(shop_bff, delivery, "Получить статус доставки", "HTTPS")
 Rel(delivery, courier_app, "Назначить заказ на исполнителя", "Web Socket")
 Rel_U(courier_bff, delivery, "Изменить статус доставки", "HTTPS")
+Rel_U(courier_app, courier_bff, "Изменить статус доставки", "HTTPS")
 }
+
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
+Rel_R(ordering_ext, delivery, "Cоздан новый заказ", "Async, Kafka")
 ```
 
 ## Component diagram
