@@ -36,12 +36,13 @@ Rel(customer, shop_app, "Получить статус доставки", "HTTPS
 Rel(manager, backoffice_app, "Получить статус доставки", "HTTPS")
 
 ' Сourier App
-
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/courier/courier_app.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/courier/gateway.puml
 Rel_U(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
-Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
-ContainerDb(delivery_db, "Database", "Postgre SQL", "Курьеры, заказы и т.п.")
-Rel(delivery, delivery_db, "Чтение / Запись", "Sync, TCP")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/delivery/normal.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/delivery/db.puml
+
 Rel_R(ordering, delivery, "Cоздан новый заказ", "Async, Kafka")
 Rel(backoffice_bff, delivery, "Получить статус доставки", "HTTPS")
 Rel(shop_bff, delivery, "Получить статус доставки", "HTTPS")
