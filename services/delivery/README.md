@@ -34,15 +34,14 @@ Rel(manager, backoffice_app, "Получить статус доставки", "
 ' Сourier App
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/courier/courier_app.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/courier/gateway.puml
-Rel_U(courier, courier_app, "Изменить статус доставки", "HTTPS")
+Rel(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/delivery/normal.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/delivery/db.puml
 Rel(backoffice_bff, delivery, "Получить статус доставки", "HTTPS")
 Rel(shop_bff, delivery, "Получить статус доставки", "HTTPS")
-Rel(delivery, courier_app, "Назначить заказ на исполнителя", "Web Socket")
-Rel_U(courier_bff, delivery, "Изменить статус доставки", "HTTPS")
-Rel_U(courier_app, courier_bff, "Изменить статус доставки", "HTTPS")
+Rel(delivery, courier_bff, "Назначить заказ на исполнителя", "Web Socket")
+Rel_R(courier_bff, delivery, "Изменить статус доставки", "HTTPS")
 }
 
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
