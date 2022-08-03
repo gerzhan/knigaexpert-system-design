@@ -17,18 +17,13 @@ LAYOUT_WITH_LEGEND()
 
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/manager.puml
 
-System_Boundary(boundary, "Warehouse") {
-
-' Backoffice
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/front-ends/backoffice.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice-gateway.puml
 Rel(manager, backoffice_app, "Принять поставку", "HTTPS")
 
-
-' Services
-Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
-ContainerDb(warehouse_db, "Database", "Postgre SQL", "Схема склада, товары и т.п.")
-Rel(warehouse, warehouse_db, "Чтение / Запись", "Sync, TCP")
+System_Boundary(boundary, "Warehouse") {
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse/normal.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse/db.puml
 Rel(backoffice_bff, warehouse, "Принять поставку", "HTTP")
 }
 
@@ -36,9 +31,8 @@ Rel(backoffice_bff, warehouse, "Принять поставку", "HTTP")
 Rel_L(warehouse, catalog_ext, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse, catalog_ext, "Изменены остатки существующего продукта", "Async, Kafka")
 
-Container_Ext(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
-Rel_L(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")
-
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
+Rel_L(ordering_ext, warehouse, "Cоздан новый заказ", "Async, Kafka")
 ```
 
 ## Component diagram

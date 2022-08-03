@@ -16,19 +16,18 @@ skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-Person(customer, Покупатель, "Совершает покупки")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
 
 ' Shop
-Container_Ext(shop_app, "Shop", "Web, React", "Витрина интернет магазина")
-Container_Ext(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
-Rel(shop_app, shop_bff, "Формирует корзину, делает заказ", "HTTPS")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/front-ends/shop.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop-gateway.puml
 Rel(customer, shop_app, "Формирует корзину, делает заказ", "HTTPS")
 
-Container_Ext(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
-Rel(shop_bff, ordering, "Формирует корзину, делает заказ", "HTTPS")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
+Rel(shop_bff, ordering_ext, "Формирует корзину, делает заказ", "HTTPS")
 
 System_Boundary(boundary, "Payment") {
-  Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
+  !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/payment/normal.puml
   Rel_R(ordering, payment, "Оплата заказа", "Sync, gRPC")
 }
 ```

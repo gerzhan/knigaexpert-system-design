@@ -1,0 +1,5 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+ContainerDb(payment_db, "Database", "Postgre SQL", "Банковские карты, платежи и т.п.")
+Rel(payment, paymentg_db, "Чтение / Запись", "Sync, TCP")
+@enduml
