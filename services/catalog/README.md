@@ -8,28 +8,29 @@
 Диаграмма контейнеров показывает высокоуровневую архитектуру программного обеспечения и то, как в ней распределяются обязанности. Она также показывает основные используемые технологии и то, как контейнеры взаимодействуют друг с другом. Это простая схема высокого уровня, ориентированная на технологии, которая одинаково полезна как для разработчиков программного обеспечения, так и для персонала службы поддержки и эксплуатации.
 
 ```plantuml
-' !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+skinparam wrapWidth 200
+skinparam maxMessageSize 200
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
 
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/manager.puml
 
-skinparam wrapWidth 200
-skinparam maxMessageSize 200
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/front-ends/shop.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/front-ends/backoffice.puml
 
-LAYOUT_TOP_DOWN()
-LAYOUT_WITH_LEGEND()
+
 
 Container_Ext(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
 
 System_Boundary(boundary, "Catalog") {
 ' Shop
-Container(shop_app, "Shop", "Web, React", "Витрина интернет магазина")
 Container_Ext(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
 Rel(shop_app, shop_bff, "Просматривает каталог, карточку товара", "HTTPS")
 Rel(customer, shop_app, "Просматривает каталог, карточку товара", "HTTPS")
 
 ' Backoffice
-Container(backoffice_app, "Backoffice", "Web, React", "Панель управления интернет магазином")  
 Container_Ext(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
 Rel(backoffice_app, backoffice_bff, "Изменение цены, описания продукта", "HTTPS")
 Rel(manager, backoffice_app, "Изменение цены, описания продукта", "HTTPS")
