@@ -36,12 +36,11 @@ Rel(manager, backoffice_app, "Использует", "HTTPS")
 ' Сourier App
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/courier/courier_app.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/courier/gateway.puml
-Rel_U(courier, courier_app, "Изменить статус доставки", "HTTPS")
+Rel(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
 ' Services
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/auth/normal.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/auth/db.puml
-Rel(auth, auth_db, "Чтение / Запись", "Sync, TCP")
 Rel(shop_app, auth, "Аутентифициуется, получает JWT токен", "HTTPS")
 Rel(backoffice_app, auth, "Аутентифициуется, получает JWT токен", "HTTPS")
 Rel_R(shop_bff, auth, "Получает cert.pub раз в 30 мин", "HTTPS")
