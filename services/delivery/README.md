@@ -26,21 +26,17 @@ LAYOUT_WITH_LEGEND()
 
 System_Boundary(boundary, "Delivery") {
 ' Shop
-Container(shop_app, "Shop", "Web, React", "Витрина интернет магазина")
-Container_Ext(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
-Rel(shop_app, shop_bff, "Получить статус доставки", "HTTPS")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/shop.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/gateway.puml
 Rel(customer, shop_app, "Получить статус доставки", "HTTPS")
 
 ' Backoffice
-Container(backoffice_app, "Backoffice", "Web, React", "Панель управления интернет магазином")  
-Container_Ext(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
-Rel(backoffice_app, backoffice_bff, "Получить статус доставки", "HTTPS")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Получить статус доставки", "HTTPS")
 
 ' Сourier App
-Container(courier_app, "Courier App", "Mobile, React Native", "Приложение курьера")  
-Container_Ext(courier_bff, "Courier BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
-Rel_U(courier_app, courier_bff, "Изменить статус доставки", "HTTPS")
+
 Rel_U(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
 Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
