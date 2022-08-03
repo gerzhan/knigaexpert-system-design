@@ -26,10 +26,7 @@ LAYOUT_WITH_LEGEND()
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse/ext.puml
 
 System_Boundary(boundary, "Catalog") {
-' Shop
 Rel(customer, shop_app, "Просматривает каталог, карточку товара", "HTTPS")
-
-' Backoffice
 Rel(manager, backoffice_app, "Изменение цены, описания продукта", "HTTPS")
 
 ' Service
