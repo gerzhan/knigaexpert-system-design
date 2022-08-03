@@ -1,0 +1,5 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+ContainerDb(delivery_db, "Database", "Postgre SQL", "Курьеры, заказы и т.п.")
+Rel(delivery, delivery_db, "Чтение / Запись", "Sync, TCP")
+@enduml

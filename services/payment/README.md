@@ -9,20 +9,17 @@
 
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/front-ends/shop.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop-gateway.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
-
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
-
-' Shop
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/front-ends/shop.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop-gateway.puml
 Rel(customer, shop_app, "Формирует корзину, делает заказ", "HTTPS")
-
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
 Rel(shop_bff, ordering_ext, "Формирует корзину, делает заказ", "HTTPS")
 
 System_Boundary(boundary, "Payment") {
