@@ -13,15 +13,15 @@
 
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
-
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-Person(customer, Покупатель, "Совершает покупки")
-Person(manager, Менеджер, "Управляет интернет магазином")
-Person(courier, Курьер, "Доставляет заказ")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog/ext.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog/normal.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog/db.puml
 
-Container_Ext(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
+
 
 
 System_Boundary(boundary, "Delivery") {

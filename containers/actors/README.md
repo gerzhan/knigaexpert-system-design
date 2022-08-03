@@ -3,4 +3,5 @@
 
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/manager.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/courier.puml
 ```
