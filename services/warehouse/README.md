@@ -10,22 +10,18 @@
 
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
-
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-Person(manager, Менеджер, "Принимает поставки")
-
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/manager.puml
 
 System_Boundary(boundary, "Warehouse") {
 
 ' Backoffice
-Container(backoffice_app, "Backoffice", "Web, React", "Панель управления интернет магазином")  
-Container_Ext(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
-Rel(backoffice_app, backoffice_bff, "Принять поставку", "HTTPS")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/front-ends/backoffice.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice-gateway.puml
 Rel(manager, backoffice_app, "Принять поставку", "HTTPS")
 
 
