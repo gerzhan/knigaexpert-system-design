@@ -32,9 +32,9 @@ Rel(warehouse, warehouse_db, "Чтение / Запись", "Sync, TCP")
 Rel(backoffice_bff, warehouse, "Принять поставку", "HTTP")
 }
 
-Container_Ext(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
-Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, Kafka")
-Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog/ext.puml
+Rel_L(warehouse, catalog_ext, "Добавлен новый продукт", "Async, Kafka")
+Rel_L(warehouse, catalog_ext, "Изменены остатки существующего продукта", "Async, Kafka")
 
 Container_Ext(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
 Rel_L(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")

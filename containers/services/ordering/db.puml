@@ -1,0 +1,5 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+ContainerDb(ordering_db, "Database", "Postgre SQL", "Корзина, товары и т.п.")
+Rel(ordering, ordering_db, "Чтение / Запись", "Sync, TCP")
+@enduml
