@@ -23,7 +23,7 @@ LAYOUT_WITH_LEGEND()
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse_ext.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse/ext.puml
 
 System_Boundary(boundary, "Catalog") {
 ' Shop
@@ -35,8 +35,8 @@ Rel(manager, backoffice_app, "Изменение цены, описания пр
 ' Service
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog_db.puml
-Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, Kafka")
-Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
+Rel_L(warehouse_ext, catalog, "Добавлен новый продукт", "Async, Kafka")
+Rel_L(warehouse_ext, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
 Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTP")
 Rel(backoffice_bff, catalog, "Изменение цены, описания продукта", "HTTP")
 }
