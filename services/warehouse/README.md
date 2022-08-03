@@ -17,11 +17,11 @@ LAYOUT_WITH_LEGEND()
 
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/manager.puml
 
+System_Boundary(boundary, "Warehouse") {
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Принять поставку", "HTTPS")
 
-System_Boundary(boundary, "Warehouse") {
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse/normal.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse/db.puml
 Rel(backoffice_bff, warehouse, "Принять поставку", "HTTP")
