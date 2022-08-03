@@ -23,17 +23,13 @@ LAYOUT_WITH_LEGEND()
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop-gateway.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice-gateway.puml
 
-
-
-Container_Ext(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse_ext.puml
 
 System_Boundary(boundary, "Catalog") {
 ' Shop
-Rel(shop_app, shop_bff, "Просматривает каталог, карточку товара", "HTTPS")
 Rel(customer, shop_app, "Просматривает каталог, карточку товара", "HTTPS")
 
 ' Backoffice
-Rel(backoffice_app, backoffice_bff, "Изменение цены, описания продукта", "HTTPS")
 Rel(manager, backoffice_app, "Изменение цены, описания продукта", "HTTPS")
 
 ' Service
