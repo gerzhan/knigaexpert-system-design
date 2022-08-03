@@ -1,0 +1,5 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+ContainerDb(catalog_db, "Database", "Postgre SQL", "Категории, товары и т.п.")
+Rel(catalog, catalog_db, "Чтение / Запись", "Sync, TCP")
+@enduml

@@ -20,25 +20,22 @@ LAYOUT_WITH_LEGEND()
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/front-ends/shop.puml
 !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/front-ends/backoffice.puml
 
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop-gateway.puml
+!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice-gateway.puml
 
 
 Container_Ext(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
 
 System_Boundary(boundary, "Catalog") {
 ' Shop
-Container_Ext(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
 Rel(shop_app, shop_bff, "Просматривает каталог, карточку товара", "HTTPS")
 Rel(customer, shop_app, "Просматривает каталог, карточку товара", "HTTPS")
 
 ' Backoffice
-Container_Ext(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
 Rel(backoffice_app, backoffice_bff, "Изменение цены, описания продукта", "HTTPS")
 Rel(manager, backoffice_app, "Изменение цены, описания продукта", "HTTPS")
 
-
-Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
-ContainerDb(catalog_db, "Database", "Postgre SQL", "Категории, товары и т.п.")
-Rel(catalog, catalog_db, "Чтение / Запись", "Sync, TCP")
+' Service
 Rel_L(warehouse, catalog, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
 Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTP")
