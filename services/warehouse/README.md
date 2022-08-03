@@ -123,7 +123,7 @@ package "Warehouse Aggregate"  #DDDDDD {
 package "Good Aggregate" #DDDDDD {
   Class Good <Aggregate>
   {
-    - uuid goodId
+    - uuid id
     - string title
     - string description
     - int weight
