@@ -73,53 +73,71 @@ Rel(ma, accounts, "Uses", "JSON/HTTPS")
 package "Warehouse Aggregate"  #DDDDDD {
   Class Warehouse <Aggregate>
   {
-    - Place[] places
+    - Places[] Places
 
     + Warehouse()
-    + Places[] Find(uuid goodId)
-    + void Move(Place from, Place to, Item item)
-    + void Add(Item item)
-    + void Take(Item item)
+    + Place FindPlace(Good good)
+    + Place GetPlaceByLocation(Location location)
+    + Place GetPlaceByCategory(Category category)
+    + Load(Category category, Pile pile)
+    + TakeOne(Category category)
   }
   
   Class Place <Entity>
   {
-    - MaximumAvailableWeight = 50
-    - Location location
-    - Item item
+    - Warehouse Warehouse
+    - Location Location
+    - Category Category
+    - Pile item
 
-    + Place(Location location)  
-    + void Add(Item item)
-    + void Take(Item item)
-    + void Move(Place to, Item item)
-  }
+    + Place(Warehouse warehouse, Location location, Category category)
+    + SetPile(Pile pile)
+  }  
 
-  Class Item <Value Object>{
-    - uuid goodId
-    - int weight
-    - int quantity     
+  Class Pile <Value Object>{
+    - Good Good
+    - int Quantity
+    + SubtractOne()
   }
 
   Class Location <Value Object> {
-    - int row
-    - int shelf 
+    - int Row
+    - int Shelf 
   }
 
   Warehouse *- Place
   Place *- Location
-  Place *-- Item  
+  Place *-- Pile
+}
+
+package "SharedKernel" #DDDDDD {
+  Class Category <Value Object>
+  {
+    - string Name
+    + Category(string name)
+  }  
+  Place *- Category 
+
+  Class Weight <Value Object>
+  {
+    - int Gram
+    + Weight(int gram)
+  }
 }
 
 package "Good Aggregate" #DDDDDD {
   Class Good <Aggregate>
   {
-    - uuid id
-    - string title
-    - string description
-    - int weight
-    + Good(string title, string description, int weight)
+    - uuid Id
+    - string Title
+    - string Description
+    - Weight Weight
+    - Category Category
+    + Good(Guid id, string title, string description, Weight weight, Category category
   }
-  Item *-- Good
+  Good *-- Weight
+  Good *- Category
+  Pile *-- Good
 }
 ```
 
@@ -140,7 +158,7 @@ entity Places {
   * item_id : uuid <<FK>>
 }
 
-entity Items {
+entity Piles {
   * id : uuid <<PK>>
   * goodId : uuid <<FK>>
   * weight : int
@@ -155,8 +173,8 @@ entity Goods {
 }
 
 Warehouses ||-  Places
-Places }o- Items
-Items }o--|| Goods
+Places }o- Piles
+Piles }o--|| Goods
 ```
 ## Use case diagram
 > Диаграмма вариантов использования показывает, какой функционал разрабатываемой программной системы доступен каждой группе пользователей.
