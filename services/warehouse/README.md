@@ -151,30 +151,24 @@ entity Warehouses {
 
 entity Places {
   * id : uuid <<PK>>
-  * maximum_available_weight : int
+  * warehouse_id <<FK>>
   * location_row : int
   * location_shelf : int
-  * id : warehouse_id <<FK>>
-  * item_id : uuid <<FK>>
-}
-
-entity Piles {
-  * id : uuid <<PK>>
-  * goodId : uuid <<FK>>
-  * weight : int
-  * quantity : int
+  * category_name : string
+  * pile_good_id : string
+  * pile_quantity : string
 }
 
 entity Goods {
   * id : uuid <<PK>>
   * title : string
   * description : description
-  * weight : int
+  * category_name : string
+  * weight_gram : int
 }
 
 Warehouses ||-  Places
-Places }o- Piles
-Piles }o--|| Goods
+Places }o--|| Goods
 ```
 ## Use case diagram
 > Диаграмма вариантов использования показывает, какой функционал разрабатываемой программной системы доступен каждой группе пользователей.
