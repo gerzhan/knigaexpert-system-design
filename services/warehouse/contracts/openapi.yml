@@ -4,7 +4,7 @@ info:
   title: Swagger Warehouse
   description: REST API методы
 paths:
-  /api/v1/warehouses:
+  /api/v1/places:
     get:
       summary: Получить схему склада
       description: |
@@ -19,6 +19,31 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Place'
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/places/row/{id}/shelf/{id}/add:
+    post:
+      summary: Принять поставку
+      description: Позволяет принять новые товары на склад
+      operationId: addGood
+      requestBody:
+        description: Товар
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/      '
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Good'
         default:
           description: Ошибка
           content:
@@ -40,30 +65,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Good'
-        default:
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    post:
-      summary: Принять поставку
-      description: Позволяет принять новые товары на склад
-      operationId: addGood
-      requestBody:
-        description: Товар
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NewGood'
-      responses:
-        '200':
-          description: Успешный ответ
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Good'
         default:
           description: Ошибка
           content:
