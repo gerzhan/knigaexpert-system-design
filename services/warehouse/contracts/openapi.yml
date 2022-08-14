@@ -25,31 +25,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/v1/places/row/{id}/shelf/{id}/add:
-    post:
-      summary: Принять поставку
-      description: Позволяет принять новые товары на склад
-      operationId: addGood
-      requestBody:
-        description: Товар
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/      '
-      responses:
-        '200':
-          description: Успешный ответ
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Good'
-        default:
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /api/v1/goods:
     get:
       summary: Получить все товары
@@ -119,6 +94,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/v1/goods/{id}/increase:
+    post:
+      summary: Принять поставку
+      description: Принять поставку по идентификатору
+      operationId: increaseGood
+      parameters:
+        - name: id
+          in: path
+          description: Идентификатор
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Update an existent pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Availability'
+      responses:
+        '200':
+          description: Успешный ответ
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     Place:
@@ -145,7 +148,6 @@ components:
               description: Количество товара
     Good:
       allOf:
-        - $ref: '#/components/schemas/NewGood'
         - required:
           - id
           properties:
@@ -153,20 +155,21 @@ components:
               type: string
               format: uuid
               description: Идентификатор
-    NewGood:
-      required:
-        - title
-      properties:
-        title:
-          type: string
-          description: Название
-        description:
-          type: string
-          description: Описание
-        quantity:
-          type: integer
-          format: int32
-          description: Количество
+            title:
+              type: string
+              description: Название
+            description:
+              type: string
+              description: Описание
+    Availability:
+      allOf:
+        - required:
+          - quantity
+          properties:
+            quantity:
+              type: integer
+              format: int32
+              description: Количество
     Error:
       required:
         - code
