@@ -4,6 +4,27 @@ info:
   title: Swagger Warehouse
   description: REST API методы
 paths:
+  /api/v1/warehouses:
+    get:
+      summary: Получить схему склада
+      description: |
+        Позволяет получить все места на складе и их заполнение
+      operationId: getPlaces
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Place'
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/v1/goods:
     get:
       summary: Получить все товары
@@ -99,6 +120,28 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Place:
+      allOf:
+        - required:
+          - id
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Идентификатор
+            row:
+              type: integer
+              description: Ряд
+            shelf:
+              type: integer
+              description: Полка
+            goodId:
+              type: string
+              format: uuid
+              description: Идентификатор товара
+            quantity:
+              type: integer
+              description: Количество товара
     Good:
       allOf:
         - $ref: '#/components/schemas/NewGood'
