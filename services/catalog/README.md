@@ -80,54 +80,37 @@ Rel(ma, accounts, "Uses", "JSON/HTTPS")
 > Диаграмма классов показывает общую структуру иерархии классов системы, их коопераций, атрибутов, методов, интерфейсов и взаимосвязей между ними.
 
 ```plantuml
-package "Warehouse Aggregate"  #DDDDDD {
-  Class Warehouse <Aggregate>
+package "Catalog Aggregate"  #DDDDDD {
+  Class Catalog <Aggregate>
   {
-    - Places[] Places
-
-    + Warehouse()
-    + Place FindPlace(Good good)
-    + Place GetPlaceByLocation(Location location)
-    + Place GetPlaceByCategory(Category category)
-    + Load(Category category, Pile pile)
-    + TakeOne(Category category)
+    - Category[] Categories 
+    
+    + Catalog()
   }
   
-  Class Place <Entity>
+  Class Category <Entity>
   {
-    - Warehouse Warehouse
-    - Location Location
-    - Category Category
-    - Pile item
+    - uuid Id
+    - string Title 
+    - Pile[] Piles
 
-    + Place(Warehouse warehouse, Location location, Category category)
-    + SetPile(Pile pile)
+    + Category(string title)
+    + AddPile(Pile pile)
   }  
 
   Class Pile <Value Object>{
     - Good Good
     - int Quantity
-    + SubtractOne()
+    - int Price
+    + BuyOne()
+    + AddOne()
   }
 
-  Class Location <Value Object> {
-    - int Row
-    - int Shelf 
-  }
-
-  Warehouse *- Place
-  Place *- Location
-  Place *-- Pile
+  Catalog *- Category
+  Category *-- Pile
 }
 
 package "SharedKernel" #DDDDDD {
-  Class Category <Value Object>
-  {
-    - string Name
-    + Category(string name)
-  }  
-  Place *- Category 
-
   Class Weight <Value Object>
   {
     - int Gram
@@ -141,14 +124,16 @@ package "Good Aggregate" #DDDDDD {
     - uuid Id
     - string Title
     - string Description
+    - string imageUrl
     - Weight Weight
     - Category Category
     + Good(Guid id, string title, string description, Weight weight, Category category
   }
   Good *-- Weight
-  Good *- Category
   Pile *-- Good
 }
+
+
 ```
 
 ## Use case diagram
