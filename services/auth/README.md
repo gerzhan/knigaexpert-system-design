@@ -28,12 +28,12 @@ Container_Ext(warehouse, "Warehouse", ".Net, Docker", "Управление ск
 
 System_Boundary(boundary, "Auth") {
 ' Shop
-!include frontends/shop/shop.puml
+!include frontends/shop/web_app.puml
 !include frontends/shop/gateway.puml
 Rel(customer, shop_app, "Использует", "HTTPS")
 
 ' Backoffice
-!include frontends/backoffice/backoffice.puml
+!include frontends/backoffice/web_app.puml
 !include frontends/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Использует", "HTTPS")
 

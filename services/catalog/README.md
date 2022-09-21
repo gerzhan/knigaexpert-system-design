@@ -22,17 +22,17 @@ LAYOUT_WITH_LEGEND()
 !include actors/customer.puml
 !include actors/manager.puml
 
-!include frontends/shop/shop.puml
+!include frontends/shop/web_app.puml
 !include frontends/shop/gateway.puml
 
-!include frontends/backoffice/backoffice.puml
+!include frontends/backoffice/web_app.puml
 !include frontends/backoffice/gateway.puml
 
 !include services/warehouse/ext.puml
 
 System_Boundary(boundary, "Catalog") {
-Rel(customer, shop_app, "Просматривает каталог, карточку товара", "HTTPS")
-Rel(manager, backoffice_app, "Изменение цены, описания продукта", "HTTPS")
+Rel(customer, shop_web_app, "Просматривает каталог, карточку товара", "HTTPS")
+Rel(manager, backoffice_web_app, "Изменение цены, описания продукта", "HTTPS")
 
 ' Service
 !include services/catalog/normal.puml

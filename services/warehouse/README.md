@@ -22,7 +22,7 @@ LAYOUT_WITH_LEGEND()
 !include actors/manager.puml
 
 System_Boundary(boundary, "Warehouse") {
-!include frontends/backoffice/backoffice.puml
+!include frontends/backoffice/web_app.puml
 !include frontends/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Принять поставку", "HTTPS")
 

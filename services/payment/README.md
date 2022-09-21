@@ -15,7 +15,7 @@
 !define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
 !include actors/customer.puml
-!include frontends/shop/shop.puml
+!include frontends/shop/web_app.puml
 !include frontends/shop/gateway.puml
 !include services/ordering/ext.puml
 skinparam wrapWidth 200

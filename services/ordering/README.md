@@ -23,7 +23,7 @@ LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
 System_Boundary(boundary, "Ordering") {
-!include frontends/shop/shop.puml
+!include frontends/shop/web_app.puml
 !include frontends/shop/gateway.puml
 !include services/ordering/normal.puml
 !include services/ordering/db.puml

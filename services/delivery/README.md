@@ -26,12 +26,12 @@ LAYOUT_WITH_LEGEND()
 
 System_Boundary(boundary, "Delivery") {
 ' Shop
-!include frontends/shop/shop.puml
+!include frontends/shop/web_app.puml
 !include frontends/shop/gateway.puml
 Rel(customer, shop_app, "Получить статус доставки", "HTTPS")
 
 ' Backoffice
-!include frontends/backoffice/backoffice.puml
+!include frontends/backoffice/web_app.puml
 !include frontends/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Получить статус доставки", "HTTPS")
 
