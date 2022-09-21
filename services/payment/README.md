@@ -11,12 +11,12 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 ' Components
 !define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
-!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
 !define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
 !include actors/customer.puml
-!include gateways/shop/shop.puml
-!include gateways/shop/gateway.puml
+!include frontends/shop/shop.puml
+!include frontends/shop/gateway.puml
 !include services/ordering/ext.puml
 skinparam wrapWidth 200
 skinparam maxMessageSize 200

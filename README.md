@@ -56,7 +56,7 @@ Rel_L(customer, auth, "Авторизуется")
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 ' Components
 !define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
-!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
 !define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
 skinparam wrapWidth 200
@@ -105,7 +105,7 @@ Rel_L(courier_bff, auth, "Аутентифициуется", "HTTPS")
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 ' Components
 !define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
-!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
 !define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
 skinparam wrapWidth 200

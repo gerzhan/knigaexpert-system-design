@@ -12,7 +12,7 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 ' Components
 !define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
-!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
 !define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
@@ -22,8 +22,8 @@ LAYOUT_WITH_LEGEND()
 !include actors/manager.puml
 
 System_Boundary(boundary, "Warehouse") {
-!include gateways/backoffice/backoffice.puml
-!include gateways/backoffice/gateway.puml
+!include frontends/backoffice/backoffice.puml
+!include frontends/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Принять поставку", "HTTPS")
 
 !include services/warehouse/normal.puml

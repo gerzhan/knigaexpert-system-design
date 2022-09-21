@@ -12,7 +12,7 @@
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 ' Components
 !define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
-!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
 !define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
 skinparam wrapWidth 200
@@ -26,18 +26,18 @@ LAYOUT_WITH_LEGEND()
 
 System_Boundary(boundary, "Delivery") {
 ' Shop
-!include gateways/shop/shop.puml
-!include gateways/shop/gateway.puml
+!include frontends/shop/shop.puml
+!include frontends/shop/gateway.puml
 Rel(customer, shop_app, "Получить статус доставки", "HTTPS")
 
 ' Backoffice
-!include gateways/backoffice/backoffice.puml
-!include gateways/backoffice/gateway.puml
+!include frontends/backoffice/backoffice.puml
+!include frontends/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Получить статус доставки", "HTTPS")
 
 ' Сourier App
-!include gateways/courier/courier_app.puml
-!include gateways/courier/gateway.puml
+!include frontends/courier/courier_app.puml
+!include frontends/courier/gateway.puml
 Rel(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
 !include services/delivery/normal.puml
