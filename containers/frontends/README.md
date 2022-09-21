@@ -5,12 +5,12 @@
 !define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
 !define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
-!include frontends/shop/shop_web_app.puml
+!include frontends/shop/web_app.puml
 !include frontends/shop/gateway.puml
 
-!include frontends/backoffice/backoffice_web_app.puml
+!include frontends/backoffice/web_app.puml
 !include frontends/backoffice/gateway.puml
 
-!include frontends/courier/courier_mobile_app.puml
-!include frontends/courier/gateway.puml
+' !include frontends/courier/courier_mobile_app.puml
+' !include frontends/courier/gateway.puml
 ```
