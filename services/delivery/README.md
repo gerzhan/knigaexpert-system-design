@@ -16,35 +16,35 @@ skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/manager.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/courier.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/customer.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/manager.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/courier.puml
 
 System_Boundary(boundary, "Delivery") {
 ' Shop
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/shop.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/gateway.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/shop.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/gateway.puml
 Rel(customer, shop_app, "Получить статус доставки", "HTTPS")
 
 ' Backoffice
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Получить статус доставки", "HTTPS")
 
 ' Сourier App
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/courier/courier_app.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/courier/gateway.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/courier/courier_app.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/courier/gateway.puml
 Rel(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/delivery/normal.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/delivery/db.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/delivery/normal.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/delivery/db.puml
 Rel(backoffice_bff, delivery, "Получить статус доставки", "HTTPS")
 Rel(shop_bff, delivery, "Получить статус доставки", "HTTPS")
 Rel(delivery, courier_bff, "Назначить заказ на исполнителя", "Web Socket")
 Rel_R(courier_bff, delivery, "Изменить статус доставки", "HTTPS")
 }
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/ordering/ext.puml
 Rel_R(ordering_ext, delivery, "Cоздан новый заказ", "Async, Kafka")
 ```
 

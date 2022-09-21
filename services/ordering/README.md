@@ -11,7 +11,7 @@
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/customer.puml
 
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
@@ -19,18 +19,18 @@ LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
 System_Boundary(boundary, "Ordering") {
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/shop.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/gateway.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/normal.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/db.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/shop.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/gateway.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/ordering/normal.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/ordering/db.puml
 
 Rel(customer, shop_app, "Формирует корзину, делает заказ", "HTTPS")
 Rel(shop_bff, ordering, "Формирует корзину, делает заказ", "HTTPS")
 }
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse/ext.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/delivery/ext.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/payment/ext.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/warehouse/ext.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/delivery/ext.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/payment/ext.puml
 
 Rel(ordering, warehouse_ext, "Cоздан новый заказ", "Async, Kafka")
 Rel(ordering, delivery_ext, "Cоздан новый заказ", "Async, Kafka")

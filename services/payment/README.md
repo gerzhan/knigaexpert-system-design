@@ -10,10 +10,10 @@
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/shop.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/gateway.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/ordering/ext.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/customer.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/shop.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/gateway.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/ordering/ext.puml
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
@@ -23,7 +23,7 @@ Rel(customer, shop_app, "Формирует корзину, делает зак�
 Rel(shop_bff, ordering_ext, "Формирует корзину, делает заказ", "HTTPS")
 
 System_Boundary(boundary, "Payment") {
-  !include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/payment/normal.puml
+  !include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/payment/normal.puml
   Rel_R(ordering_ext, payment, "Оплата заказа", "Sync, gRPC")
 }
 ```

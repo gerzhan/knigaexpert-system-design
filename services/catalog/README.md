@@ -14,24 +14,24 @@ skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/customer.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/actors/manager.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/customer.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/manager.puml
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/shop.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/shop/gateway.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/shop.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/gateway.puml
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
 
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/warehouse/ext.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/warehouse/ext.puml
 
 System_Boundary(boundary, "Catalog") {
 Rel(customer, shop_app, "Просматривает каталог, карточку товара", "HTTPS")
 Rel(manager, backoffice_app, "Изменение цены, описания продукта", "HTTPS")
 
 ' Service
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog.puml
-!include https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/raw/main/containers/services/catalog_db.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog_db.puml
 Rel_L(warehouse_ext, catalog, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse_ext, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
 Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTP")
