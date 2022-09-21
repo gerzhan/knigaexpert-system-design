@@ -10,28 +10,32 @@
 
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+' Components
+!define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
+!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/manager.puml
+!include actors/manager.puml
 
 System_Boundary(boundary, "Warehouse") {
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
+!include gateways/backoffice/backoffice.puml
+!include gateways/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Принять поставку", "HTTPS")
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/warehouse/normal.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/warehouse/db.puml
+!include services/warehouse/normal.puml
+!include services/warehouse/db.puml
 Rel(backoffice_bff, warehouse, "Принять поставку", "HTTP")
 }
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog/ext.puml
+!include services/catalog/ext.puml
 Rel_L(warehouse, catalog_ext, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse, catalog_ext, "Изменены остатки существующего продукта", "Async, Kafka")
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/ordering/ext.puml
+!include services/ordering/ext.puml
 Rel_L(ordering_ext, warehouse, "Cоздан новый заказ", "Async, Kafka")
 ```
 

@@ -10,41 +10,45 @@
 
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+' Components
+!define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
+!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/customer.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/manager.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/courier.puml
+!include actors/customer.puml
+!include actors/manager.puml
+!include actors/courier.puml
 
 System_Boundary(boundary, "Delivery") {
 ' Shop
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/shop.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/gateway.puml
+!include gateways/shop/shop.puml
+!include gateways/shop/gateway.puml
 Rel(customer, shop_app, "Получить статус доставки", "HTTPS")
 
 ' Backoffice
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
+!include gateways/backoffice/backoffice.puml
+!include gateways/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Получить статус доставки", "HTTPS")
 
 ' Сourier App
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/courier/courier_app.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/courier/gateway.puml
+!include gateways/courier/courier_app.puml
+!include gateways/courier/gateway.puml
 Rel(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/delivery/normal.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/delivery/db.puml
+!include services/delivery/normal.puml
+!include services/delivery/db.puml
 Rel(backoffice_bff, delivery, "Получить статус доставки", "HTTPS")
 Rel(shop_bff, delivery, "Получить статус доставки", "HTTPS")
 Rel(delivery, courier_bff, "Назначить заказ на исполнителя", "Web Socket")
 Rel_R(courier_bff, delivery, "Изменить статус доставки", "HTTPS")
 }
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/ordering/ext.puml
+!include services/ordering/ext.puml
 Rel_R(ordering_ext, delivery, "Cоздан новый заказ", "Async, Kafka")
 ```
 

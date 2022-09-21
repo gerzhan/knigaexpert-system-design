@@ -1,5 +1,9 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+' Components
+!define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
+!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 Container_Ext(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
 Rel(shop_app, shop_bff, "Использует", "HTTPS")
 @enduml

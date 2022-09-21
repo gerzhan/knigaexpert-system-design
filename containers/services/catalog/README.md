@@ -1,9 +1,13 @@
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+' Components
+!define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
+!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog/ext.puml
+!include services/catalog/ext.puml
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog/normal.puml
+!include services/catalog/normal.puml
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog/db.puml
+!include services/catalog/db.puml
 ```

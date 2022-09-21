@@ -9,6 +9,10 @@
 
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+' Components
+!define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
+!define gateways https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways  
+!define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
@@ -16,31 +20,31 @@ skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/customer.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/manager.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/courier.puml
+!include actors/customer.puml
+!include actors/manager.puml
+!include actors/courier.puml
 
 Container_Ext(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
 
 System_Boundary(boundary, "Auth") {
 ' Shop
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/shop.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/shop/gateway.puml
+!include gateways/shop/shop.puml
+!include gateways/shop/gateway.puml
 Rel(customer, shop_app, "Использует", "HTTPS")
 
 ' Backoffice
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/backoffice.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/backoffice/gateway.puml
+!include gateways/backoffice/backoffice.puml
+!include gateways/backoffice/gateway.puml
 Rel(manager, backoffice_app, "Использует", "HTTPS")
 
 ' Сourier App
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/courier/courier_app.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/gateways/courier/gateway.puml
+!include gateways/courier/courier_app.puml
+!include gateways/courier/gateway.puml
 Rel(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
 ' Services
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/auth/normal.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/auth/db.puml
+!include services/auth/normal.puml
+!include services/auth/db.puml
 Rel(shop_app, auth, "Аутентифициуется, получает JWT токен", "HTTPS")
 Rel(backoffice_app, auth, "Аутентифициуется, получает JWT токен", "HTTPS")
 Rel_R(shop_bff, auth, "Получает cert.pub раз в 30 мин", "HTTPS")
