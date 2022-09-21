@@ -53,7 +53,7 @@ https://swagger.io/docs/specification/basic-structure/ (начните отсю�
 
 
 ## Попробуем создать API с нуля
-- Изучите Use-case диаграмму https://gitlab.com/microarch-ru/microservices/dotnet/system-design/-/tree/main/services/ordering#use-case-diagram
+- Изучите Use-case диаграмму https://gitlab.com/microarch-ru/microservices/system-design/-/tree/main/services/ordering#use-case-diagram
 - Реализуйте API методы в Open API (Swagger)
 
 Как будет готово, скопируйте то что вышло в файл openapi.yml и вышлите мне. 
