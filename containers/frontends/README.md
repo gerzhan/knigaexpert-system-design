@@ -11,6 +11,6 @@
 !include frontends/backoffice/web_app.puml
 !include frontends/backoffice/gateway.puml
 
-' !include frontends/courier/courier_mobile_app.puml
-' !include frontends/courier/gateway.puml
+!include frontends/courier/mobile_app.puml
+!include frontends/courier/gateway.puml
 ```
