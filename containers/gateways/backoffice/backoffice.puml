@@ -1,1 +1,1 @@
-Container(backoffice_app, "Backoffice", "Web, React", "Панель управления интернет магазином") 
+Container(backoffice_web_app, "Backoffice", "Web, React", "Панель управления интернет магазином") 

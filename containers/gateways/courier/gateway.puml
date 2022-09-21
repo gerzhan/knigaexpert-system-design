@@ -1,2 +1,2 @@
 Container_Ext(courier_bff, "Courier BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
-Rel(courier_app, courier_bff, "Использует", "HTTPS")
+Rel(courier_mobile_app, courier_bff, "Использует", "HTTPS")

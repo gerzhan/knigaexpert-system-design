@@ -1,2 +1,2 @@
 Container_Ext(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
-Rel(backoffice_app, backoffice_bff, "Использует", "HTTPS")
+Rel(backoffice_web_app, backoffice_bff, "Использует", "HTTPS")

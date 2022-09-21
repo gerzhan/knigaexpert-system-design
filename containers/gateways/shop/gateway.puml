@@ -1,2 +1,2 @@
 Container_Ext(shop_bff, "Shop BFF", "Api Gateway, Ocelot", "Маршрутизация трафика c web приложения shop, аутентификацяи, авторизация")
-Rel(shop_app, shop_bff, "Использует", "HTTPS")
+Rel(shop_web_app, shop_bff, "Использует", "HTTPS")
