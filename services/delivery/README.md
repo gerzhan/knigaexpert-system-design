@@ -83,6 +83,81 @@ Rel(ma, sign, "Uses", "JSON/HTTPS")
 Rel(ma, accounts, "Uses", "JSON/HTTPS")
 ```
 
+## Code diagram
+> Диаграмма классов показывает общую структуру иерархии классов системы, их коопераций, атрибутов, методов, интерфейсов и взаимосвязей между ними.
+
+```plantuml
+package "Warehouse Aggregate"  #DDDDDD {
+  Class Warehouse <Aggregate>
+  {
+    - Places[] Places
+
+    + Warehouse()
+    + Place FindPlace(Good good)
+    + Place GetPlaceByLocation(Location location)
+    + Place GetPlaceByCategory(Category category)
+    + Load(Category category, Pile pile)
+    + TakeOne(Category category)
+  }
+  
+  Class Place <Entity>
+  {
+    - Warehouse Warehouse
+    - Location Location
+    - Category Category
+    - Pile item
+
+    + Place(Warehouse warehouse, Location location, Category category)
+    + SetPile(Pile pile)
+  }  
+
+  Class Pile <Value Object>{
+    - Good Good
+    - int Quantity
+    + SubtractOne()
+  }
+
+  Class Location <Value Object> {
+    - int Row
+    - int Shelf 
+  }
+
+  Warehouse *- Place
+  Place *- Location
+  Place *-- Pile
+}
+
+package "SharedKernel" #DDDDDD {
+  Class Category <Value Object>
+  {
+    - string Name
+    + Category(string name)
+  }  
+  Place *- Category 
+
+  Class Weight <Value Object>
+  {
+    - int Gram
+    + Weight(int gram)
+  }
+}
+
+package "Good Aggregate" #DDDDDD {
+  Class Good <Aggregate>
+  {
+    - uuid Id
+    - string Title
+    - string Description
+    - Weight Weight
+    - Category Category
+    + Good(Guid id, string title, string description, Weight weight, Category category
+  }
+  Good *-- Weight
+  Good *- Category
+  Pile *-- Good
+}
+```
+
 ## Use case diagram
 Диаграмма вариантов использования показывает, какой функционал разрабатываемой программной системы доступен каждой группе пользователей.
 
