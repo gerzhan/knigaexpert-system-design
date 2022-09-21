@@ -30,8 +30,9 @@ Rel(customer, shop_app, "Просматривает каталог, карточ
 Rel(manager, backoffice_app, "Изменение цены, описания продукта", "HTTPS")
 
 ' Service
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog.puml
-!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog_db.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog/normal.puml
+!include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services/catalog/db.puml
+
 Rel_L(warehouse_ext, catalog, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse_ext, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
 Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTP")
