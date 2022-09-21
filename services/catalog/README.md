@@ -13,7 +13,7 @@ skinparam wrapWidth 200
 skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
-
+         
 !include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/customer.puml
 !include https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors/manager.puml
 
