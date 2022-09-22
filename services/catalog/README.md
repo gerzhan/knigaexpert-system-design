@@ -38,8 +38,7 @@ Rel(manager, backoffice_web_app, "Изменение цены, описания 
 !include services/catalog/normal.puml
 !include services/catalog/db.puml
 
-Rel_L(warehouse_ext, catalog, "Добавлен новый продукт", "Async, Kafka")
-Rel_L(warehouse_ext, catalog, "Изменены остатки существующего продукта", "Async, Kafka")
+Rel_L(warehouse_ext, catalog, "Добавлен новый продукт/изменены остатки существющего продукта", "Async, Kafka")
 Rel(shop_bff, catalog, "Просматривает каталог, карточку товара", "HTTP")
 Rel(backoffice_bff, catalog, "Изменение цены, описания продукта", "HTTP")
 }
@@ -52,28 +51,68 @@ Rel(backoffice_bff, catalog, "Изменение цены, описания пр
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 LAYOUT_WITH_LEGEND()
 
-Container(spa, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
-Container(ma, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
-ContainerDb(db, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
-System_Ext(mbs, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
+' Components
+!define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
+!define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
+!define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
-Container_Boundary(boundary, "Warehouse") {
-    Component(sign, "Sign In Controller", "MVC Rest Controlle", "Allows users to sign in to the internet banking system")
-    Component(accounts, "Accounts Summary Controller", "MVC Rest Controller", "Provides customers with a summary of their bank accounts")
-    Component(security, "Security Component", "Spring Bean", "Provides functionality related to singing in, changing passwords, etc.")
-    Component(mbsfacade, "Mainframe Banking System Facade", "Spring Bean", "A facade onto the mainframe banking system.")
+!include frontends/shop/web_app.puml
+!include frontends/shop/gateway.puml
 
-    Rel(sign, security, "Uses")
-    Rel(accounts, mbsfacade, "Uses")
-    Rel(security, db, "Read & write to", "JDBC")
-    Rel(mbsfacade, mbs, "Uses", "XML/HTTPS")
+!include frontends/backoffice/web_app.puml
+!include frontends/backoffice/gateway.puml
+
+Container_Ext(message_bus, "Message Bus", "Kafka", "Transport for business events")
+
+Container_Boundary(catalog_service, "Catalog") {
+    Container_Boundary(api_layer, "API Layer") {
+    Component(catalog_controller, "CatalogController", "Web API Controller", "Обрабатывает HTTP запросы, извлекает параметры из них")
+    
+    Component(goods_consumer, "GoodsConsumer", "Kafka Consumer", "Обрабатывает Message из Kafka")
+    }
+
+    Container_Boundary(application_layer, "Application Layer") {
+      Container_Boundary(commands, "Commands") {
+        Component(uc4_upload_good_command, "UC-4 UploadGoodCommand", "", "Добавление/изменение остатков продукта")
+        Component(uc3_edit_good_command, "UC-3 EditGoodCommand", "", "Изменение цены, описания продукта")
+      }
+
+      Container_Boundary(queries, "Queries") {
+        Component(uc1_get_catalog_query, "UC-1 GetCatalogQuery", "", "Просмотр каталога продуктов")
+
+        Component(uc2_get_good_details_query, "UC-2 GetGoodDetailsQuery", "", "Посмотр карточки продукта")
+      }
+    }
+
+    Container_Boundary(domain_layer, "Domain Layer") {
+      Component(catalog_aggregate, "Catalog", "Aggregate", "Категории и товары в них")
+      Component(good_aggregate, "Good", "Aggregate", "Описание товара, цена, остатки")
+    }
+
+    Container_Boundary(infrastructure_layer, "Infrastructure Layer") {
+      Component(catalog_aggregate_repository, "CatalogRepository", "", "Provides functionality related to singing in, changing passwords, etc.")
+      Component(good_aggregate_repository, "GoodRepository", "", "A facade onto the mainframe banking system.")
+    }
+
+    Rel(message_bus, goods_consumer, "Добавлен новый продукт/изменены остатки существющего продукта", "Async, Kafka")
+    
+    Rel(shop_bff, catalog_controller, "Просматривает каталог, карточку товара", "HTTP")
+    Rel(backoffice_bff, catalog_controller, "Изменение цены, описания продукта", "HTTP")
+
+    Rel_D(api_layer, application_layer, "Uses")
+    
+    Rel_D(commands, domain_layer, "Uses")
+
+    Rel_R(catalog_aggregate, good_aggregate, "Uses")
+
+    Rel_D(commands, infrastructure_layer, "Uses")
 }
 
-Rel(spa, sign, "Uses", "JSON/HTTPS")
-Rel(spa, accounts, "Uses", "JSON/HTTPS")
+ContainerDb(db, "CatalogDb", "Postgres", "Хранит категории и товары в них")
+Rel_D(infrastructure_layer, db, "Uses")
+Rel_D(queries, db, "Uses")
 
-Rel(ma, sign, "Uses", "JSON/HTTPS")
-Rel(ma, accounts, "Uses", "JSON/HTTPS")
+
 ```
 
 ## Code diagram
@@ -92,22 +131,12 @@ package "Catalog Aggregate"  #DDDDDD {
   {
     - uuid Id
     - string Title 
-    - Pile[] Piles
+    - Good[] Goods
 
     + Category(string title)
-    + AddPile(Pile pile)
+    + AddGood(uuid goodId)
+    + RemoveGood(uuid goodId)
   }  
-
-  Class Pile <Value Object>{
-    - Good Good
-    - int Quantity
-    - int Price
-    + BuyOne()
-    + AddOne()
-  }
-
-  Catalog *- Category
-  Category *-- Pile
 }
 
 package "SharedKernel" #DDDDDD {
@@ -125,12 +154,17 @@ package "Good Aggregate" #DDDDDD {
     - string Title
     - string Description
     - string imageUrl
-    - Weight Weight
-    - Category Category
+    - Weight Weight    
+    - int Quantity
+    - int Price
+    + Buy(int quantity)
+    + Upload(int quantity)
     + Good(Guid id, string title, string description, Weight weight, Category category
   }
+
+  Catalog *- Category
   Good *-- Weight
-  Pile *-- Good
+  Category *-- Good
 }
 
 
@@ -151,14 +185,12 @@ rectangle Catalog {
   usecase (UC-1 Просмотр каталога продуктов) as UC1
   usecase (UC-2 Посмотр карточки продукта) as UC2
   usecase (UC-3 Изменение цены, описания продукта) as UC3
-  usecase (UC-4 Добавление нового продукта) as UC4
-  usecase (UC-5 Изменение остатков существующего продукта) as UC5
+  usecase (UC-4 Добавление/изменение остатков продукта) as UC4
 
   url of UC1 is [[use-cases/uc-1.md]]
   url of UC2 is [[use-cases/uc-2.md]]
   url of UC3 is [[use-cases/uc-3.md]]
   url of UC4 is [[use-cases/uc-4.md]]
-  url of UC5 is [[use-cases/uc-5.md]]
 }
 
 client --> UC1
@@ -169,12 +201,10 @@ UC2 <-- manager
 UC3 <-- manager
 
 UC4<-- warehouse
-UC5<-- warehouse
 ```
 ## Use cases
 - [UC-1](use-cases/uc-1.md) Просмотр каталога продуктов.
 - [UC-2](use-cases/uc-2.md) Посмотр карточки продукта.
 - [UC-3](use-cases/uc-3.md) Изменение цены, описания продукта.
-- [UC-4](use-cases/uc-4.md) Добавление нового продукта.
-- [UC-5](use-cases/uc-5.md) Изменение остатков существующего продукта.
+- [UC-4](use-cases/uc-4.md) Добавление/изменение остатков продукта.
 
