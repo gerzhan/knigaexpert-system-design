@@ -51,16 +51,7 @@ Rel(backoffice_bff, catalog, "Изменение цены, описания пр
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 LAYOUT_WITH_LEGEND()
 
-' Components
-!define actors https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/actors
-!define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
-!define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
-
-!include frontends/shop/web_app.puml
-!include frontends/shop/gateway.puml
-
-!include frontends/backoffice/web_app.puml
-!include frontends/backoffice/gateway.puml
+Container_Ext(api_client, "API Client", " HTTP REST", "Внешний потребитель API")
 
 Container_Ext(message_bus, "Message Bus", "Kafka", "Transport for business events")
 
@@ -96,8 +87,8 @@ Container_Boundary(catalog_service, "Catalog") {
 
     Rel(message_bus, goods_consumer, "Добавлен новый продукт/изменены остатки существющего продукта", "Async, Kafka")
     
-    Rel(shop_bff, catalog_controller, "Просматривает каталог, карточку товара", "HTTP")
-    Rel(backoffice_bff, catalog_controller, "Изменение цены, описания продукта", "HTTP")
+    Rel(api_client, catalog_controller, "Просматривает каталог, карточку товара", "HTTP")
+    Rel(api_client, catalog_controller, "Изменение цены, описания продукта", "HTTP")
 
     Rel_D(api_layer, application_layer, "Uses")
     
