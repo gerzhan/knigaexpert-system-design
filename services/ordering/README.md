@@ -75,20 +75,19 @@ Container_Boundary(ordering_service, "Ordering") {
     Container_Boundary(infrastructure_layer, "Infrastructure Layer") {
       Component(basket_aggregate_repository, "BasketRepository", "", "Репозиторий для сохранения/восстановления аггрегата Basket")
     }
-
-    Rel(message_bus, goods_consumer, "Добавлен новый продукт/изменены остатки существющего продукта", "Async, Kafka")
-    
-    Rel(api_client, ordering_http_handler, "Добавляет, удаляет товары из корзины, оформляет ее", "HTTP")
-
-    Rel_D(api_layer, application_layer, "Uses")
-    
-    Rel_D(commands, domain_layer, "Uses")
-
-    Rel_D(commands, infrastructure_layer, "Uses")
 }
 ContainerDb(db, "BasketDb", "Postgres", "Хранит корзины и элементы в них")
+
+Rel(message_bus, goods_consumer, "Добавлен новый продукт/изменены остатки существющего продукта", "Async, Kafka")
+Rel(api_client, ordering_http_handler, "Добавляет, удаляет товары из корзины, оформляет ее", "HTTP")
+Rel(api_layer, application_layer, "Uses")
+Rel_L(commands, domain_layer, "Uses")
+Rel_L(commands, infrastructure_layer, "Uses")
 Rel_D(infrastructure_layer, db, "Uses")
-Rel_L(queries, db, "Uses")
+Rel_D(queries, db, "Uses")
+
+Lay_D(application_layer, domain_layer)
+Lay_D(domain_layer,infrastructure_layer)
 ```
 
 ## Code diagram
