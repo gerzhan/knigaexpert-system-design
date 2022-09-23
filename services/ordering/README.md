@@ -86,8 +86,6 @@ Container_Boundary(ordering_service, "Ordering") {
 
     Rel_D(commands, infrastructure_layer, "Uses")
 }
-Lay_L(application_layer,domain_layer)
-Lay_D(domain_layer,infrastructure_layer)
 ContainerDb(db, "BasketDb", "Postgres", "Хранит корзины и элементы в них")
 Rel_D(infrastructure_layer, db, "Uses")
 Rel_L(queries, db, "Uses")
