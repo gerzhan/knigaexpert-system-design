@@ -1,1 +1,1 @@
-Container_Ext(payment_ext, "Payment", ".Net, Docker", "Управление процессом оплаты")
+Container_Ext(payment_ext, "Payment", "Docker", "Управление процессом оплаты")

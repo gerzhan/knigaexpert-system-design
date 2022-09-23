@@ -1,1 +1,1 @@
-Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
+Container(warehouse, "Warehouse", "Docker", "Управление складом")

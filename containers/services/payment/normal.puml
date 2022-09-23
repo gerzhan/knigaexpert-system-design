@@ -1,1 +1,1 @@
-Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
+Container(payment, "Payment", "Docker", "Управление процессом оплаты")

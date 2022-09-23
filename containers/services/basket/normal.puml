@@ -1,1 +1,1 @@
-Container(basket, "Basket", ".Net, Docker", "Управление процессом оформления заказа")
+Container(basket, "Basket", "Docker", "Управление процессом оформления заказа")

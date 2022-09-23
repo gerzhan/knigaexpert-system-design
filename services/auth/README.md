@@ -24,7 +24,7 @@ LAYOUT_WITH_LEGEND()
 !include actors/manager.puml
 !include actors/courier.puml
 
-Container_Ext(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
+Container_Ext(warehouse, "Warehouse", "Docker", "Управление складом")
 
 System_Boundary(boundary, "Auth") {
 ' Shop

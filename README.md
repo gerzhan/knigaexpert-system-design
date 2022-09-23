@@ -87,7 +87,7 @@ Container(courier_bff, "Courier BFF", "Api Gateway, Ocelot", "Маршрутиз
 Rel_L(courier_app, courier_bff, "Изменить статус доставки", "HTTPS")
 Rel_L(courier, courier_app, "Изменить статус доставки", "HTTPS")
 
-Container(microservices, "Microservices", ".Net, Docker", "Группа микросервисов")
+Container(microservices, "Microservices", "Docker", "Группа микросервисов")
 Rel(shop_bff, microservices, "Использует", "HTTPS")
 Rel(backoffice_bff, microservices, "Использует", "HTTPS")
 Rel_L(courier_bff, microservices, "Использует", "HTTPS")
@@ -119,22 +119,22 @@ Person(manager, Менеджер, "Управляет интернет мага�
 Person(courier, Курьер, "Доставляет заказ")
 
 System_Boundary(microservices, "Microservices") {
-  Container(basket, "Basket", ".Net, Docker", "Управление процессом оформления заказа")
+  Container(basket, "Basket", "Docker", "Управление процессом оформления заказа")
   Rel(customer, basket, "Делает заказ", "HTTPS")  
 
-  Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
+  Container(warehouse, "Warehouse", "Docker", "Управление складом")
   Rel_R(basket, warehouse, "Cоздан новый заказ", "Async, Kafka")
   Rel(manager, warehouse, "Поставки, изменение остатков", "HTTPS")
 
-  Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
+  Container(catalog, "Catalog", "Docker", "Управление каталогом витрины")
   Rel(warehouse, catalog, "Товары, остатки", "Async, Kafka")
   Rel(customer, catalog, "Витрина, карточка товара", "HTTPS")
   Rel(manager, catalog, "Изменение цен и описания", "HTTPS")
 
-  Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
+  Container(payment, "Payment", "Docker", "Управление процессом оплаты")
   Rel(basket, payment, "Оплата заказа", "Sync, gRPC")
 
-  Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
+  Container(delivery, "Delivery", "Docker", "Управление процессом доставки заказа")
   Rel(basket, delivery, "Cоздан новый заказ", "Async, Kafka")
   Rel(manager, delivery, "Получить статус доставки", "HTTPS")
   Rel(delivery,courier,"Назначает заказ")

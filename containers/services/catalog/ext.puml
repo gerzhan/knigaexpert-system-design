@@ -1,1 +1,1 @@
-Container_Ext(catalog_ext, "Catalog", ".Net, Docker", "Управление каталогом витрины")
+Container_Ext(catalog_ext, "Catalog", "Docker", "Управление каталогом витрины")
