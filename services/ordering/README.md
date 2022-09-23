@@ -2,8 +2,7 @@
 
 ## Ordering
 Позволяет формировать корзину.
-Когда покупатель завершает покупки, то он может добавить адрес доставки,
-оплатить и тем самым создать заказ.
+Когда покупатель завершает покупки, то он может добавить адрес доставки и оформить корзну.
 
 ## Container diagram
 Диаграмма контейнеров показывает высокоуровневую архитектуру программного обеспечения и то, как в ней распределяются обязанности. Она также показывает основные используемые технологии и то, как контейнеры взаимодействуют друг с другом. Это простая схема высокого уровня, ориентированная на технологии, которая одинаково полезна как для разработчиков программного обеспечения, так и для персонала службы поддержки и эксплуатации.
@@ -15,30 +14,27 @@
 !define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
 !define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
-!include actors/customer.puml
-
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
+!include actors/customer.puml
 System_Boundary(boundary, "Ordering") {
-!include frontends/shop/web_app.puml
-!include frontends/shop/gateway.puml
-!include services/ordering/normal.puml
-!include services/ordering/db.puml
+  !include frontends/shop/web_app.puml
+  !include frontends/shop/gateway.puml
+  !include services/ordering/normal.puml
+  !include services/ordering/db.puml
 
-Rel(customer, shop_app, "Формирует корзину, делает заказ", "HTTPS")
-Rel(shop_bff, ordering, "Формирует корзину, делает заказ", "HTTPS")
+  Rel(customer, shop_web_app, "Формирует корзину, делает заказ", "HTTPS")
+  Rel(shop_bff, ordering, "Формирует корзину, делает заказ", "HTTPS")
 }
 
 !include services/warehouse/ext.puml
 !include services/delivery/ext.puml
-!include services/payment/ext.puml
 
 Rel(ordering, warehouse_ext, "Cоздан новый заказ", "Async, Kafka")
 Rel(ordering, delivery_ext, "Cоздан новый заказ", "Async, Kafka")
-Rel_R(ordering, payment_ext, "Оплата заказа", "Sync, gRPC")
 ```
 
 ## Component diagram
