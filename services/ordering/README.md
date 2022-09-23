@@ -16,7 +16,7 @@
 
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
-LAYOUT_TOP_DOWN()
+' LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
 !include actors/customer.puml
@@ -48,55 +48,49 @@ Container_Ext(api_client, "API Client", " HTTP REST", "Внешний потре
 
 Container_Ext(message_bus, "Message Bus", "Kafka", "Transport for business events")
 
-Container_Boundary(catalog_service, "Catalog") {
+Container_Boundary(ordering_service, "Ordering") {
     Container_Boundary(api_layer, "API Layer") {
-    Component(catalog_controller, "CatalogController", "Web API Controller", "Обрабатывает HTTP запросы, извлекает параметры из них")
+    Component(ordering_http_handler, "OrderingHttpController", "Web API Controller", "Обрабатывает HTTP запросы, извлекает параметры из них")
     
     Component(goods_consumer, "GoodsConsumer", "Kafka Consumer", "Обрабатывает Message из Kafka")
     }
 
     Container_Boundary(application_layer, "Application Layer") {
       Container_Boundary(commands, "Commands") {
-        Component(uc4_upload_good_command, "UC-4 UploadGoodCommand", "", "Добавление/изменение остатков продукта")
-        Component(uc3_edit_good_command, "UC-3 EditGoodCommand", "", "Изменение цены, описания продукта")
+        Component(add_item_command, "AddItemCommand", "", "UC-1 Добавление товара в корзину")
+        Component(remove_item_command, "RemoveItemCommand", "", "UC-2 Удаление товара из корзины")
+        Component(add_address_command, "AddAddressCommand", "", "UC-4 Добавление адреса доставки")
+        Component(checkout_command, "CheckoutCommand", "", "UC-5 Оплата заказа")
       }
 
       Container_Boundary(queries, "Queries") {
-        Component(uc1_get_catalog_query, "UC-1 GetCatalogQuery", "", "Просмотр каталога продуктов")
-
-        Component(uc2_get_good_details_query, "UC-2 GetGoodDetailsQuery", "", "Посмотр карточки продукта")
+        Component(get_basket_query, "GetBasketQuery", "", "UC-3 Просмотр списка товаров в корзине")
       }
     }
 
     Container_Boundary(domain_layer, "Domain Layer") {
-      Component(catalog_aggregate, "Catalog", "Aggregate", "Категории и товары в них")
-      Component(good_aggregate, "Good", "Aggregate", "Описание товара, цена, остатки")
+      Component(catalog_aggregate, "Basket", "Aggregate", "Корзина товаров")
     }
 
     Container_Boundary(infrastructure_layer, "Infrastructure Layer") {
-      Component(catalog_aggregate_repository, "CatalogRepository", "", "Provides functionality related to singing in, changing passwords, etc.")
-      Component(good_aggregate_repository, "GoodRepository", "", "A facade onto the mainframe banking system.")
+      Component(basket_aggregate_repository, "BasketRepository", "", "Репозиторий для сохранения/восстановления аггрегата Basket")
     }
 
     Rel(message_bus, goods_consumer, "Добавлен новый продукт/изменены остатки существющего продукта", "Async, Kafka")
     
-    Rel(api_client, catalog_controller, "Просматривает каталог, карточку товара", "HTTP")
-    Rel(api_client, catalog_controller, "Изменение цены, описания продукта", "HTTP")
+    Rel(api_client, ordering_http_handler, "Добавляет, удаляет товары из корзины, оформляет ее", "HTTP")
 
     Rel_D(api_layer, application_layer, "Uses")
     
     Rel_D(commands, domain_layer, "Uses")
 
-    Rel_R(catalog_aggregate, good_aggregate, "Uses")
-
     Rel_D(commands, infrastructure_layer, "Uses")
 }
-
-ContainerDb(db, "CatalogDb", "Postgres", "Хранит категории и товары в них")
+Lay_L(application_layer,domain_layer)
+Lay_D(domain_layer,infrastructure_layer)
+ContainerDb(db, "BasketDb", "Postgres", "Хранит корзины и элементы в них")
 Rel_D(infrastructure_layer, db, "Uses")
-Rel_D(queries, db, "Uses")
-
-
+Rel_L(queries, db, "Uses")
 ```
 
 ## Code diagram
