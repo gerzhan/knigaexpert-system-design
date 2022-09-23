@@ -150,7 +150,7 @@ package "Good Aggregate" #DDDDDD {
     - string Description
     - Weight Weight
     - Category Category
-    + Good(Guid id, string title, string description, Weight weight, Category category
+    + Good(Guid id, string title, string description, Weight weight, Category category)
   }
   Good *-- Weight
   Good *- Category

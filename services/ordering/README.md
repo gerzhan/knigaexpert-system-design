@@ -72,104 +72,79 @@ Rel(ma, accounts, "Uses", "JSON/HTTPS")
 Диаграмма классов показывает общую структуру иерархии классов системы, их коопераций, атрибутов, методов, интерфейсов и взаимосвязей между ними.
 
 ```plantuml
-package "Warehouse Aggregate"  #DDDDDD {
-  Class Warehouse <Aggregate>
+package "Basket Aggregate"  #DDDDDD {
+  Class Basket <Aggregate>
   {
-    - Places[] Places
+    - uuid Id
+    - Item[] Items
+    - Address Address
+    - Status Status
 
-    + Warehouse()
-    + Place FindPlace(Good good)
-    + Place GetPlaceByLocation(Location location)
-    + Place GetPlaceByCategory(Category category)
-    + Load(Category category, Pile pile)
-    + TakeOne(Category category)
+    + Basket()
+    + AddItem(Item item)
+    + RemoveItem(uuid itemId)
+    + AddAddress(Address address)
+    + Checkout()
+    + Done()    
   }
   
-  Class Place <Entity>
-  {
-    - Warehouse Warehouse
-    - Location Location
-    - Category Category
-    - Pile item
-
-    + Place(Warehouse warehouse, Location location, Category category)
-    + SetPile(Pile pile)
-  }  
-
-  Class Pile <Value Object>{
-    - Good Good
-    - int Quantity
-    + SubtractOne()
-  }
-
-  Class Location <Value Object> {
-    - int Row
-    - int Shelf 
-  }
-
-  Warehouse *- Place
-  Place *- Location
-  Place *-- Pile
-}
-
-package "SharedKernel" #DDDDDD {
-  Class Category <Value Object>
-  {
-    - string Name
-    + Category(string name)
-  }  
-  Place *- Category 
-
-  Class Weight <Value Object>
-  {
-    - int Gram
-    + Weight(int gram)
-  }
-}
-
-package "Good Aggregate" #DDDDDD {
-  Class Good <Aggregate>
+  Class Item <Entity>
   {
     - uuid Id
     - string Title
-    - string Description
-    - Weight Weight
-    - Category Category
-    + Good(Guid id, string title, string description, Weight weight, Category category
+    - decimal Price    
+    + Item(uuid id, string title, string description, decimal price)    
+  }  
+
+  Class Address <Value Object>{
+    - string City
+    - string Street
+    - string Building
+    + Address(string сity, string street, string building)
   }
-  Good *-- Weight
-  Good *- Category
-  Pile *-- Good
+
+  Class Status <Value Object>{
+    - int Id
+    - string Name
+    + New
+    + Filled
+    + CheckoutStarted
+    + Done
+
+    - Status(int Id, string Name)
+  }  
 }
+
+Basket *-- Item
+Basket *- Address
+Basket *-- Status
 ```
 ## ER diagram
 Диаграмма отношений сущностей это визуальное представление базы данных, которое показывает, как связаны элементы внутри. Диаграмма ER состоит из двух типов объектов — сущностей и отношений.
 
 ```plantuml
-entity Warehouses {
+entity Baskets {
   * id : uuid <<PK>>
+  * status_id <<FK>>
+  * address_city : string
+  * address_street : string
+  * address_building : string
 }
 
-entity Places {
+entity Items {
   * id : uuid <<PK>>
-  * warehouse_id <<FK>>
-  * location_row : int
-  * location_shelf : int
-  * category_name : string
-  * pile_good_id : string
-  * pile_quantity : string
+  * basket_id <<FK>>
+  * title string
+  * price : decimal
 }
 
-entity Goods {
-  * id : uuid <<PK>>
-  * title : string
-  * description : description
-  * category_name : string
-  * weight_gram : int
+entity Statuses {
+  * id : integer <<PK>>
+  * name : string
 }
 
-Warehouses ||-  Places
-Places }o--|| Goods
+Baskets ||-  Items
+Baskets }o--|| Statuses
 ```
 
 ## Use case diagram
