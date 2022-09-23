@@ -102,8 +102,6 @@ Container_Boundary(catalog_service, "Catalog") {
 ContainerDb(db, "CatalogDb", "Postgres", "Хранит категории и товары в них")
 Rel_D(infrastructure_layer, db, "Uses")
 Rel_D(queries, db, "Uses")
-
-
 ```
 
 ## Code diagram
