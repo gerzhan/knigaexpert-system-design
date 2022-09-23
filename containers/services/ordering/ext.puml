@@ -1,1 +1,1 @@
-Container_Ext(ordering_ext, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
+Container_Ext(basket_ext, "Basket", ".Net, Docker", "Управление процессом оформления заказа")

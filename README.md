@@ -119,11 +119,11 @@ Person(manager, Менеджер, "Управляет интернет мага�
 Person(courier, Курьер, "Доставляет заказ")
 
 System_Boundary(microservices, "Microservices") {
-  Container(ordering, "Ordering", ".Net, Docker", "Управление процессом оформления заказа")
-  Rel(customer, ordering, "Делает заказ", "HTTPS")  
+  Container(basket, "Basket", ".Net, Docker", "Управление процессом оформления заказа")
+  Rel(customer, basket, "Делает заказ", "HTTPS")  
 
   Container(warehouse, "Warehouse", ".Net, Docker", "Управление складом")
-  Rel_R(ordering, warehouse, "Cоздан новый заказ", "Async, Kafka")
+  Rel_R(basket, warehouse, "Cоздан новый заказ", "Async, Kafka")
   Rel(manager, warehouse, "Поставки, изменение остатков", "HTTPS")
 
   Container(catalog, "Catalog", ".Net, Docker", "Управление каталогом витрины")
@@ -132,10 +132,10 @@ System_Boundary(microservices, "Microservices") {
   Rel(manager, catalog, "Изменение цен и описания", "HTTPS")
 
   Container(payment, "Payment", ".Net, Docker", "Управление процессом оплаты")
-  Rel(ordering, payment, "Оплата заказа", "Sync, gRPC")
+  Rel(basket, payment, "Оплата заказа", "Sync, gRPC")
 
   Container(delivery, "Delivery", ".Net, Docker", "Управление процессом доставки заказа")
-  Rel(ordering, delivery, "Cоздан новый заказ", "Async, Kafka")
+  Rel(basket, delivery, "Cоздан новый заказ", "Async, Kafka")
   Rel(manager, delivery, "Получить статус доставки", "HTTPS")
   Rel(delivery,courier,"Назначает заказ")
 }
@@ -163,7 +163,7 @@ rectangle System {
   usecase (Изменение статуса заказа на 'Доставлен') as UC7
   usecase (Назначение заказа) as UC8
   
-  ' ordering
+  ' basket
   usecase (Добавление товара в корзину) as UC9
   usecase (Удаление товара из корзины) as UC10
   usecase (Просмотр списка товаров в корзине) as UC11
@@ -210,7 +210,7 @@ UC14 <-- manager
 | Bounded Context                           | Команда       | Сервис                            | Репозиторий                                                              | Что делает                                |
 | -----------                               | -----------   | -----------                       | -----------                                                              | ----------                                |
 | Управление продуктовым каталогом          | Alpha         | [catalog](services/catalog)       |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/catalog)       | Каталог, Товары                           |
-| Управление процессом оформления заказа    | Beta          | [ordering](services/ordering)      |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/ordering)      | Корзина, Оформление, процессинг заказа    |
+| Управление процессом оформления заказа    | Beta          | [basket](services/basket)      |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/basket)      | Корзина, Оформление, процессинг заказа    |
 | Управление процессом сборки и доставки    | Gamma         | [delivery](services/delivery)     |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/delivery)      | Курьеры, Процесс досставки                |
 | Управление складом                        | Delta         | [warehouse](services/warehouse)   |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/warehouse)     | Корзина, Оформление, процессинг           |
 | Управление процессом оплаты               | Omega         | [payment](services/payment)       |[Gitlab](https://gitlab.com/microarch-ru/minimarket-csharp/payment)       | Списание денег, бонусная программа        |

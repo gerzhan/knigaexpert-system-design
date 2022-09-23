@@ -17,18 +17,18 @@
 !include actors/customer.puml
 !include frontends/shop/web_app.puml
 !include frontends/shop/gateway.puml
-!include services/ordering/ext.puml
+!include services/basket/ext.puml
 skinparam wrapWidth 200
 skinparam maxMessageSize 200
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
 
 Rel(customer, shop_app, "Формирует корзину, делает заказ", "HTTPS")
-Rel(shop_bff, ordering_ext, "Формирует корзину, делает заказ", "HTTPS")
+Rel(shop_bff, basket_ext, "Формирует корзину, делает заказ", "HTTPS")
 
 System_Boundary(boundary, "Payment") {
   !include services/payment/normal.puml
-  Rel_R(ordering_ext, payment, "Оплата заказа", "Sync, gRPC")
+  Rel_R(basket_ext, payment, "Оплата заказа", "Sync, gRPC")
 }
 ```
 
@@ -70,7 +70,7 @@ Rel(ma, accounts, "Uses", "JSON/HTTPS")
 left to right direction
 skinparam packageStyle rectangle
 
-actor Ordering as ordering << Система >>
+actor Basket as basket << Система >>
 
 rectangle Payment {
   usecase (UC-1 Списание денежных средств с карты) as UC1
@@ -78,7 +78,7 @@ rectangle Payment {
   url of UC1 is [[use-cases/uc-1.md]]  
 }
 
-ordering --> UC1
+basket --> UC1
 ```
 ## Use cases
 - [UC-1](use-cases/uc-1.md) Списание денежных средств с карты.

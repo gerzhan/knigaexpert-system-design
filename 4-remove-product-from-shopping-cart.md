@@ -11,21 +11,21 @@
 actor "Покупатель" as customer
 participant "showcase" as showcase_app
 participant "showcase BFF" as showcase_bff
-participant "ordering" as ordering
+participant "basket" as basket
 
-customer -> ordering: Запрашивает продукт
-note over ordering: [GET]/api/v1/products/{id}
+customer -> basket: Запрашивает продукт
+note over basket: [GET]/api/v1/products/{id}
 alt позитивный сценарий
-customer <--  ordering: Детали продукта
-note over ordering
+customer <--  basket: Детали продукта
+note over basket
 {  
     "title": "Яблоко",
     "price": 7
 }
 end note
 else негативный сценарий
-customer <-- ordering: Продукт не найден.
-note over ordering
+customer <-- basket: Продукт не найден.
+note over basket
 HTTP Status: 404 Not Found
 type: not-found
 end note

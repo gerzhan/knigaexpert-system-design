@@ -48,8 +48,8 @@ Rel(delivery, courier_bff, "Назначить заказ на исполнит�
 Rel_R(courier_bff, delivery, "Изменить статус доставки", "HTTPS")
 }
 
-!include services/ordering/ext.puml
-Rel_R(ordering_ext, delivery, "Cоздан новый заказ", "Async, Kafka")
+!include services/basket/ext.puml
+Rel_R(basket_ext, delivery, "Cоздан новый заказ", "Async, Kafka")
 ```
 
 ## Component diagram
@@ -198,7 +198,7 @@ skinparam packageStyle rectangle
 actor Покупатель as client
 actor Менеджер as manager
 actor Курьер as courier
-actor Ordering as ordering << Система >>
+actor Basket as basket << Система >>
 
 rectangle Delivery {
   usecase (UC-1 Принятие заказа) as UC1
@@ -213,7 +213,7 @@ rectangle Delivery {
   url of UC4 is [[use-cases/uc-4.md]]
 }
 
-ordering --> UC1
+basket --> UC1
 
 UC2 <-- courier
 UC4 --> courier

@@ -1,2 +1,2 @@
-ContainerDb(ordering_db, "Database", "Postgre SQL", "Корзина, товары и т.п.")
-Rel(ordering, ordering_db, "Чтение / Запись", "Sync, TCP")
+ContainerDb(basket_db, "Database", "Postgre SQL", "Корзина, товары и т.п.")
+Rel(basket, basket_db, "Чтение / Запись", "Sync, TCP")

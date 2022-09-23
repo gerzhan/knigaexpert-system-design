@@ -1,6 +1,6 @@
 [[_TOC_]]
 
-## Ordering
+## Basket
 Позволяет формировать корзину.
 Когда покупатель завершает покупки, то он может добавить адрес доставки и оформить корзну.
 
@@ -20,21 +20,21 @@ skinparam maxMessageSize 200
 LAYOUT_WITH_LEGEND()
 
 !include actors/customer.puml
-System_Boundary(boundary, "Ordering") {
+System_Boundary(boundary, "Basket") {
   !include frontends/shop/web_app.puml
   !include frontends/shop/gateway.puml
-  !include services/ordering/normal.puml
-  !include services/ordering/db.puml
+  !include services/basket/normal.puml
+  !include services/basket/db.puml
 
   Rel(customer, shop_web_app, "Формирует корзину, делает заказ", "HTTPS")
-  Rel(shop_bff, ordering, "Формирует корзину, делает заказ", "HTTPS")
+  Rel(shop_bff, basket, "Формирует корзину, делает заказ", "HTTPS")
 }
 
 !include services/warehouse/ext.puml
 !include services/delivery/ext.puml
 
-Rel(ordering, warehouse_ext, "Cоздан новый заказ", "Async, Kafka")
-Rel(ordering, delivery_ext, "Cоздан новый заказ", "Async, Kafka")
+Rel(basket, warehouse_ext, "Cоздан новый заказ", "Async, Kafka")
+Rel(basket, delivery_ext, "Cоздан новый заказ", "Async, Kafka")
 ```
 
 ## Component diagram
@@ -48,9 +48,9 @@ Container_Ext(api_client, "API Client", " HTTP REST", "Внешний потре
 
 Container_Ext(message_bus, "Message Bus", "Kafka", "Transport for business events")
 
-Container_Boundary(ordering_service, "Ordering") {
+Container_Boundary(basket_service, "Basket") {
     Container_Boundary(api_layer, "API Layer") {
-    Component(ordering_http_handler, "OrderingHttpController", "Web API Controller", "Обрабатывает HTTP запросы, извлекает параметры из них")
+    Component(basket_http_handler, "BasketHttpController", "Web API Controller", "Обрабатывает HTTP запросы, извлекает параметры из них")
     
     Component(goods_consumer, "GoodsConsumer", "Kafka Consumer", "Обрабатывает Message из Kafka")
     }
@@ -79,7 +79,7 @@ Container_Boundary(ordering_service, "Ordering") {
 ContainerDb(db, "BasketDb", "Postgres", "Хранит корзины и элементы в них")
 
 Rel(message_bus, goods_consumer, "Добавлен новый продукт/изменены остатки существющего продукта", "Async, Kafka")
-Rel(api_client, ordering_http_handler, "Добавляет, удаляет товары из корзины, оформляет ее", "HTTP")
+Rel(api_client, basket_http_handler, "Добавляет, удаляет товары из корзины, оформляет ее", "HTTP")
 Rel(api_layer, application_layer, "Uses")
 Rel(commands, basket_aggregate, "Uses")
 Rel(commands, infrastructure_layer, "Uses")
@@ -178,7 +178,7 @@ skinparam packageStyle rectangle
 
 actor Покупатель as client
 
-rectangle Ordering {
+rectangle Basket {
   usecase (UC-1 Добавление товара в корзину) as UC1
   usecase (UC-2 Удаление товара из корзины) as UC2
   usecase (UC-3 Просмотр списка товаров в корзине) as UC3

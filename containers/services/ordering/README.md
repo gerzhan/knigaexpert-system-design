@@ -5,7 +5,7 @@
 !define frontends https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/frontends  
 !define services https://gitlab.com/microarch-ru/microservices/system-design/-/raw/main/containers/services
 
-!include services/ordering/ext.puml
-!include services/ordering/normal.puml
-!include services/ordering/db.puml
+!include services/basket/ext.puml
+!include services/basket/normal.puml
+!include services/basket/db.puml
 ```

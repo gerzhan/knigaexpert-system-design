@@ -35,8 +35,8 @@ Rel(backoffice_bff, warehouse, "Принять поставку", "HTTP")
 Rel_L(warehouse, catalog_ext, "Добавлен новый продукт", "Async, Kafka")
 Rel_L(warehouse, catalog_ext, "Изменены остатки существующего продукта", "Async, Kafka")
 
-!include services/ordering/ext.puml
-Rel_L(ordering_ext, warehouse, "Cоздан новый заказ", "Async, Kafka")
+!include services/basket/ext.puml
+Rel_L(basket_ext, warehouse, "Cоздан новый заказ", "Async, Kafka")
 ```
 
 ## Component diagram
@@ -182,7 +182,7 @@ left to right direction
 skinparam packageStyle rectangle
 
 actor Менеджер as manager
-actor Ordering as ordering << Система >>
+actor Basket as basket << Система >>
 
 rectangle Warehouse {
   usecase (UC-1 Снизить остатки) as UC1
@@ -198,7 +198,7 @@ rectangle Warehouse {
   url of UC5 is [[use-cases/uc-5.md]]
 }
 
-UC1<-- ordering
+UC1<-- basket
 
 manager --> UC1
 manager --> UC2
