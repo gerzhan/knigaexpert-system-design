@@ -157,8 +157,36 @@ package "Good Aggregate" #DDDDDD {
   Good *-- Weight
   Category *-- Good
 }
+```
 
+## ER diagram
+> Диаграмма отношений сущностей это визуальное представление базы данных, которое показывает, как связаны элементы внутри. Диаграмма ER состоит из двух типов объектов — сущностей и отношений.
 
+```plantuml
+entity Warehouses {
+  * id : uuid <<PK>>
+}
+
+entity Places {
+  * id : uuid <<PK>>
+  * warehouse_id <<FK>>
+  * location_row : int
+  * location_shelf : int
+  * category_name : string
+  * pile_good_id : string
+  * pile_quantity : string
+}
+
+entity Goods {
+  * id : uuid <<PK>>
+  * title : string
+  * description : description
+  * category_name : string
+  * weight_gram : int
+}
+
+Warehouses ||-  Places
+Places }o--|| Goods
 ```
 
 ## Use case diagram
