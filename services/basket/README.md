@@ -198,7 +198,7 @@ client --> UC3
 client --> UC4
 client --> UC5
 ```
-## Use cases
+**Use cases**
 - [UC-1](use-cases/uc-1.md) Добавление товара в корзину.
 - [UC-2](use-cases/uc-2.md) Удаление товара из корзины.
 - [UC-3](use-cases/uc-3.md) Просмотр списка товаров в корзине.

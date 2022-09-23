@@ -80,5 +80,5 @@ rectangle Payment {
 
 basket --> UC1
 ```
-## Use cases
+**Use cases**
 - [UC-1](use-cases/uc-1.md) Списание денежных средств с карты.

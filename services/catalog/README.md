@@ -219,7 +219,7 @@ UC3 <-- manager
 
 UC4<-- warehouse
 ```
-## Use cases
+**Use cases**
 - [UC-1](use-cases/uc-1.md) Просмотр каталога продуктов.
 - [UC-2](use-cases/uc-2.md) Посмотр карточки продукта.
 - [UC-3](use-cases/uc-3.md) Изменение цены, описания продукта.

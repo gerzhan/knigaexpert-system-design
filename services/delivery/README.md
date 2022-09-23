@@ -222,7 +222,7 @@ client --> UC3
 
 UC3 <--manager
 ```
-## Use cases
+**Use cases**
 - [UC-1](use-cases/uc-1.md) Принятие заказа.
 - [UC-2](use-cases/uc-2.md) Изменение статуса заказа на 'Доставлен'.
 - [UC-3](use-cases/uc-3.md) Получение статуса доставки.
