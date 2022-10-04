@@ -81,8 +81,8 @@ Container_Boundary(catalog_service, "Catalog") {
     }
 
     Container_Boundary(infrastructure_layer, "Infrastructure Layer") {
-      Component(catalog_aggregate_repository, "CatalogRepository", "", "Provides functionality related to singing in, changing passwords, etc.")
-      Component(good_aggregate_repository, "GoodRepository", "", "A facade onto the mainframe banking system.")
+      Component(catalog_aggregate_repository, "CatalogRepository", "", "Сохранение/восстановление аггрегата")
+      Component(good_aggregate_repository, "GoodRepository", "", "Сохранение/восстановление аггрегата")
     }
 
     Rel(message_bus, goods_consumer, "Добавлен новый продукт/изменены остатки существющего продукта", "Async, Kafka")
