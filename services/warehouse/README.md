@@ -89,7 +89,7 @@ Container_Boundary(warehouse_service, "Warehouse") {
 
     Rel_D(api_layer, application_layer, "Uses")
     
-    Rel_U(commands, domain_layer, "Uses")
+    Rel_D(commands, domain_layer, "Uses")
 
     Rel_R(warehouse_aggregate, good_aggregate, "Uses")
 
