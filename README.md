@@ -76,10 +76,10 @@ Rel(shop_app, shop_bff, "Использует", "HTTPS")
 Rel(customer, shop_app, "Делает покупки", "HTTPS")
 
 ' Backoffice
-Container(backoffice_app, "Backoffice", "Web, React", "Панель управления интернет магазином")  
+Container(backoffice_web_app, "Backoffice", "Web, React", "Панель управления интернет магазином")  
 Container(backoffice_bff, "Backoffice BFF", "Api Gateway, Ocelot", "Маршрутизация трафика, аутентификацяи, авторизация")
-Rel(backoffice_app, backoffice_bff, "Использует", "HTTPS")
-Rel(manager, backoffice_app, "Управляет интернет магазином", "HTTPS")
+Rel(backoffice_web_app, backoffice_bff, "Использует", "HTTPS")
+Rel(manager, backoffice_web_app, "Управляет интернет магазином", "HTTPS")
 
 ' Сourier App
 Container(courier_app, "Courier App", "Mobile, React Native", "Приложение курьера")  
@@ -95,7 +95,7 @@ Rel_L(courier_bff, microservices, "Использует", "HTTPS")
 ' Services
 Container_Ext(auth, "Auth", "Keycloak, Java", "Сервер аутентификации")
 Rel_R(shop_app, auth, "Аутентифициуется", "HTTPS")
-Rel_L(backoffice_app, auth, "Аутентифициуется", "HTTPS")
+Rel_L(backoffice_web_app, auth, "Аутентифициуется", "HTTPS")
 Rel_L(courier_bff, auth, "Аутентифициуется", "HTTPS")
 }
 ```

@@ -33,7 +33,7 @@ Rel(customer, shop_app, "Получить статус доставки", "HTTPS
 ' Backoffice
 !include frontends/backoffice/web_app.puml
 !include frontends/backoffice/gateway.puml
-Rel(manager, backoffice_app, "Получить статус доставки", "HTTPS")
+Rel(manager, backoffice_web_app, "Получить статус доставки", "HTTPS")
 
 ' Сourier App
 !include frontends/courier/courier_app.puml

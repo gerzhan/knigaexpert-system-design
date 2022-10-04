@@ -24,7 +24,7 @@ LAYOUT_WITH_LEGEND()
 System_Boundary(boundary, "Warehouse") {
 !include frontends/backoffice/web_app.puml
 !include frontends/backoffice/gateway.puml
-Rel(manager, backoffice_app, "Принять поставку", "HTTPS")
+Rel(manager, backoffice_web_app, "Принять поставку", "HTTPS")
 
 !include services/warehouse/normal.puml
 !include services/warehouse/db.puml
@@ -40,34 +40,65 @@ Rel_L(basket_ext, warehouse, "Cоздан новый заказ", "Async, Kafka"
 ```
 
 ## Component diagram
-Диаграмма компонентов показывает из каких «компонентов» состояит контейнер, что представляет собой каждый из этих компонентов, его обязанности, технологии и детали реализации.
+Диаграмма компонентов показывает, из каких «компонентов» состояит контейнер, что представляет собой каждый из этих компонентов, его обязанности, технологии и детали реализации.
 
 ```plantuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 LAYOUT_WITH_LEGEND()
 
-Container(spa, "Single Page Application", "javascript and angular", "Provides all the internet banking functionality to customers via their web browser.")
-Container(ma, "Mobile App", "Xamarin", "Provides a limited subset ot the internet banking functionality to customers via their mobile mobile device.")
-ContainerDb(db, "Database", "Relational Database Schema", "Stores user registration information, hashed authentication credentials, access logs, etc.")
-System_Ext(mbs, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
+Container_Ext(api_client, "API Client", " HTTP REST", "Внешний потребитель API")
 
-Container_Boundary(boundary, "Warehouse") {
-    Component(sign, "Sign In Controller", "MVC Rest Controlle", "Allows users to sign in to the internet banking system")
-    Component(accounts, "Accounts Summary Controller", "MVC Rest Controller", "Provides customers with a summary of their bank accounts")
-    Component(security, "Security Component", "Spring Bean", "Provides functionality related to singing in, changing passwords, etc.")
-    Component(mbsfacade, "Mainframe Banking System Facade", "Spring Bean", "A facade onto the mainframe banking system.")
+Container_Ext(message_bus, "Message Bus", "Kafka", "Сообщения")
 
-    Rel(sign, security, "Uses")
-    Rel(accounts, mbsfacade, "Uses")
-    Rel(security, db, "Read & write to", "JDBC")
-    Rel(mbsfacade, mbs, "Uses", "XML/HTTPS")
+Container_Boundary(warehouse_service, "Warehouse") {
+    Container_Boundary(api_layer, "API Layer") {
+    Component(warehouse_handler, "WarehouseHandler", "HTTP Handler", "Обрабатывает HTTP запросы, извлекает параметры из них")
+    
+    Component(basket_consumer, "BasketConsumer", "Kafka Consumer", "Обрабатывает Message из Kafka")
+    }
+
+    Container_Boundary(application_layer, "Application Layer") {
+      Container_Boundary(commands, "Commands") {
+        Component(uc4_take_one_good_command, "UC-4 TakeOneGood", "", "Снизить остатки")
+        Component(uc2_load_goods_command, "UC-2 LoadGoods", "", "Принять поставку")
+      }
+
+      Container_Boundary(queries, "Queries") {
+        Component(uc3_get_all_goods_query, "UC-3 GetAllGoods", "", "Получить все виды товаров")
+
+        Component(uc4_get_good_by_id_query, "UC-4 GetGoodById", "", "Получить информацию о товаре")
+
+        Component(uc5_get_all_places_query, "UC-5 GetAllPlaces", "", "Получить схему склада")
+      }
+    }
+
+    Container_Boundary(domain_layer, "Domain Layer") {
+      Component(warehouse_aggregate, "Warehouse", "Aggregate", "Склад")
+      Component(good_aggregate, "Good", "Aggregate", "Описание товара, остатки")
+    }
+
+    Container_Boundary(infrastructure_layer, "Infrastructure Layer") {
+      Component(warehouse_aggregate_repository, "WarehouseRepository", "", "Сохранение/восстановление аггрегата")
+      Component(good_aggregate_repository, "GoodRepository", "", "Сохранение/восстановление аггрегата")
+    }
+
+    Rel(message_bus, basket_consumer, "Оформлен новый заказ, куплены такие-то продукты", "Async, Kafka")
+    
+    Rel(api_client, warehouse_handler, "Просматривает каталог, карточку товара", "HTTP")
+    Rel(api_client, warehouse_handler, "Изменение цены, описания продукта", "HTTP")
+
+    Rel_D(api_layer, application_layer, "Uses")
+    
+    Rel_D(commands, domain_layer, "Uses")
+
+    Rel_R(warehouse_aggregate, good_aggregate, "Uses")
+
+    Rel_D(commands, infrastructure_layer, "Uses")
 }
 
-Rel(spa, sign, "Uses", "JSON/HTTPS")
-Rel(spa, accounts, "Uses", "JSON/HTTPS")
-
-Rel(ma, sign, "Uses", "JSON/HTTPS")
-Rel(ma, accounts, "Uses", "JSON/HTTPS")
+ContainerDb(db, "WarehouseDb", "Postgres", "Хранит информацию о складе и товаров в нем")
+Rel_D(infrastructure_layer, db, "Uses")
+Rel_D(queries, db, "Uses")
 ```
 
 ## Code diagram
@@ -209,10 +240,8 @@ manager --> UC5
 **Use cases**
 - [UC-1](use-cases/uc-1.md) Снизить остатки.
 - [UC-2](use-cases/uc-2.md) Принять поставку.
-- [UC-3](use-cases/uc-3.md) Получить все товары.
+- [UC-3](use-cases/uc-3.md) Получить все виды товаров.
 - [UC-4](use-cases/uc-4.md) Получить информацию о товаре.
-- [UC-6](use-cases/uc-6.md) Переместить товар.
-- [UC-7](use-cases/uc-7.md) Получить схему склада.
-- [UC-8](use-cases/uc-8.md) Найти место хранения товара.
+- [UC-6](use-cases/uc-5.md) Получить схему склада.
 
 

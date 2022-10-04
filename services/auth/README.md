@@ -35,7 +35,7 @@ Rel(customer, shop_app, "Использует", "HTTPS")
 ' Backoffice
 !include frontends/backoffice/web_app.puml
 !include frontends/backoffice/gateway.puml
-Rel(manager, backoffice_app, "Использует", "HTTPS")
+Rel(manager, backoffice_web_app, "Использует", "HTTPS")
 
 ' Сourier App
 !include frontends/courier/courier_app.puml
@@ -46,7 +46,7 @@ Rel(courier, courier_app, "Изменить статус доставки", "HTT
 !include services/auth/normal.puml
 !include services/auth/db.puml
 Rel(shop_app, auth, "Аутентифициуется, получает JWT токен", "HTTPS")
-Rel(backoffice_app, auth, "Аутентифициуется, получает JWT токен", "HTTPS")
+Rel(backoffice_web_app, auth, "Аутентифициуется, получает JWT токен", "HTTPS")
 Rel_R(shop_bff, auth, "Получает cert.pub раз в 30 мин", "HTTPS")
 Rel_L(backoffice_bff, auth, "Получает cert.pub раз в 30 мин", "HTTPS")
 Rel_U(courier_bff, auth, "Получает cert.pub раз в 30 мин", "HTTPS")
