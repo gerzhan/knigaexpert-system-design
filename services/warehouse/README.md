@@ -108,6 +108,7 @@ Rel_D(queries, db, "Uses")
 package "Warehouse Aggregate"  #DDDDDD {
   Class Warehouse <Aggregate>
   {
+    - uuid Id
     - Places[] Places
 
     + Warehouse()
@@ -120,6 +121,7 @@ package "Warehouse Aggregate"  #DDDDDD {
   
   Class Place <Entity>
   {
+    - uuid Id
     - Warehouse Warehouse
     - Location Location
     - Category Category
@@ -127,7 +129,15 @@ package "Warehouse Aggregate"  #DDDDDD {
 
     + Place(Warehouse warehouse, Location location, Category category)
     + SetPile(Pile pile)
+  }
+
+  Class Category <Entity>
+  {
+    - uuid Id
+    - string Name
+    + Category(string name)
   }  
+  Place *-- Category 
 
   Class Pile <Value Object>{
     - Good Good
@@ -145,21 +155,6 @@ package "Warehouse Aggregate"  #DDDDDD {
   Place *-- Pile
 }
 
-package "SharedKernel" #DDDDDD {
-  Class Category <Value Object>
-  {
-    - string Name
-    + Category(string name)
-  }  
-  Place *- Category 
-
-  Class Weight <Value Object>
-  {
-    - int Gram
-    + Weight(int gram)
-  }
-}
-
 package "Good Aggregate" #DDDDDD {
   Class Good <Aggregate>
   {
@@ -167,12 +162,17 @@ package "Good Aggregate" #DDDDDD {
     - string Title
     - string Description
     - Weight Weight
-    - Category Category
-    + Good(Guid id, string title, string description, Weight weight, Category category
+    + Good(Guid id, string title, string description, Weight weight)
   }
   Good *-- Weight
-  Good *- Category
   Pile *-- Good
+
+  Class Weight <Value Object>
+  {
+    - int Gram
+    + Weight(int gram)
+  }
+
 }
 ```
 
@@ -189,19 +189,24 @@ entity Places {
   * warehouse_id <<FK>>
   * location_row : int
   * location_shelf : int
-  * category_name : string
-  * pile_good_id : string
+  * category_id_ : uuid
+  * pile_good_id : uuid
   * pile_quantity : string
+}
+
+entity Categories {
+  * id : uuid <<PK>>
+  * category_name : string
 }
 
 entity Goods {
   * id : uuid <<PK>>
   * title : string
   * description : description
-  * category_name : string
   * weight_gram : int
 }
 
+Places ||--  Categories
 Warehouses ||-  Places
 Places }o--|| Goods
 ```
