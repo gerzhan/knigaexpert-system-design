@@ -4,13 +4,13 @@ info:
   title: Swagger Basket
   description: Корзина товаров
 paths:
-  /api/v1/baskets/{id}/address/add:
+  /api/v1/baskets/{basketId}/address/add:
     post:
       summary: Добавить адрес доставки
       description: Позволяет добавить адрес доставки
       operationId: AddAddress
       parameters:
-        - name: id
+        - name: basketId
           in: path
           description: Идентификатор корзины
           required: true
@@ -32,13 +32,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/v1/baskets/{id}/bank-card/add:
+  /api/v1/baskets/{basketId}/bank-card/add:
     post:
       summary: Добавить банковскую карту
       description: Позволяет добавить средство оплаты
       operationId: AddBankCard
       parameters:
-        - name: id
+        - name: basketId
           in: path
           description: Идентификатор корзины
           required: true
@@ -60,13 +60,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/v1/baskets/{id}/delivery-period/add:
+  /api/v1/baskets/{basketId}/delivery-period/add:
     post:
       summary: Добавить период доставки
       description: Позволяет период доставки
       operationId: AddDeliveryPeriod
       parameters:
-        - name: id
+        - name: basketId
           in: path
           description: Идентификатор корзины
           required: true
@@ -121,6 +121,14 @@ paths:
       summary: Получить состав корзины
       description: Позволяет получить состав корзины
       operationId: GetBasketItems
+      parameters:
+        - name: basketId
+          in: path
+          description: Идентификатор корзины
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: Успешный ответ
