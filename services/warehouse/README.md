@@ -52,9 +52,8 @@ Container_Ext(message_bus, "Message Bus", "Kafka", "Сообщения")
 
 Container_Boundary(warehouse_service, "Warehouse") {
     Container_Boundary(api_layer, "API Layer") {
-    Component(warehouse_handler, "WarehouseHandler", "HTTP Handler", "Обрабатывает HTTP запросы, извлекает параметры из них")
-    
-    Component(basket_consumer, "BasketConsumer", "Kafka Consumer", "Обрабатывает Message из Kafka")
+      Component(warehouse_handler, "WarehouseHandler", "HTTP Handler", "Обрабатывает HTTP запросы, извлекает параметры из них")
+      Component(basket_consumer, "BasketConsumer", "Kafka Consumer", "Обрабатывает Message из Kafka")
     }
 
     Container_Boundary(application_layer, "Application Layer") {
