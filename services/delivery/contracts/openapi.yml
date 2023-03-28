@@ -52,7 +52,7 @@ paths:
     get:
       summary: Получить информацию о заказе
       description: Позволяет получить состав заказа
-      operationId: GetBasketItems
+      operationId: GetOrder
       parameters:
         - name: orderId
           in: path
