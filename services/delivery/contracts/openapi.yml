@@ -1,15 +1,156 @@
 openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: Swagger Warehouse
-  description: REST API методы
+  title: Swagger Basket
+  description: Доставка товаров
 paths:
-  /api/v1/goods:
+  /api/v1/baskets/{basketId}/address/add:
+    post:
+      summary: Добавить адрес доставки
+      description: Позволяет добавить адрес доставки
+      operationId: AddAddress
+      parameters:
+        - name: basketId
+          in: path
+          description: Идентификатор корзины
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Адрес
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        '200':
+          description: Успешный ответ
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/baskets/{basketId}/bank-card/add:
+    post:
+      summary: Добавить банковскую карту
+      description: Позволяет добавить средство оплаты
+      operationId: AddBankCard
+      parameters:
+        - name: basketId
+          in: path
+          description: Идентификатор корзины
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Банковская карта
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankCard'
+      responses:
+        '200':
+          description: Успешный ответ
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/baskets/{basketId}/delivery-period/add:
+    post:
+      summary: Добавить период доставки
+      description: Позволяет период доставки
+      operationId: AddDeliveryPeriod
+      parameters:
+        - name: basketId
+          in: path
+          description: Идентификатор корзины
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Период доставки
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeliveryPeriod'
+      responses:
+        '200':
+          description: Успешный ответ
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'              
+  /api/v1/baskets/{basketId}/items/change:
+    post:
+      summary: Изменить позицию
+      description: Позволяет добавить/удалить/изменить позицию
+      operationId: ChangeItems
+      parameters:
+        - name: basketId
+          in: path
+          description: Идентификатор корзины
+          required: true
+          schema:
+            type: string
+            format: uuid          
+      requestBody:
+        description: Позиция
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          description: Успешный ответ
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/baskets/{basketId}/checkout:
+    post:
+      summary: Оформить покупку
+      description: Позволяет оформить корзину
+      operationId: Checkout
+      parameters:
+        - name: basketId
+          in: path
+          description: Идентификатор корзины
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный ответ
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/baskets/{basketId}/items:
     get:
-      summary: Получить все товары
-      description: |
-        Позволяет получить все товары доступные на складе
-      operationId: getGoods
+      summary: Получить состав корзины
+      description: Позволяет получить состав корзины
+      operationId: GetBasketItems
+      parameters:
+        - name: basketId
+          in: path
+          description: Идентификатор корзины
+          required: true
+          schema:
+            type: string
+            format: uuid
       responses:
         '200':
           description: Успешный ответ
@@ -18,90 +159,89 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Good'
+                  $ref: '#/components/schemas/Item'
         default:
           description: Ошибка
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    post:
-      summary: Принять поставку
-      description: Позволяет принять новые товары на склад
-      operationId: addGood
-      requestBody:
-        description: Товар
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NewGood'
-      responses:
-        '200':
-          description: Успешный ответ
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Good'
-        default:
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /api/v1/goods/{id}:
-    get:
-      summary: Получить информацию о товаре
-      description: Позволяет получить информацию о товаре по его идентификатору
-      operationId: getGoodById
-      parameters:
-        - name: id
-          in: path
-          description: Идентификатор товара
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Успешный ответ
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Good'
-        default:
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /api/v1/goods/{id}/write-off:
-    post:
-      summary: Списать товар
-      description: Позволяет списать товар по идентификатору
-      operationId: writeOffGood
-      parameters:
-        - name: id
-          in: path
-          description: Идентификатор
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '200':
-          description: Успешный ответ
-        default:
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+ 
 components:
   schemas:
+    Address:
+      allOf:
+        - required:
+          - country
+          - city
+          - street
+          - house
+          - apartment
+          properties:
+            country:
+              type: string
+              description: Страна
+            city:
+              type: string
+              description: Город
+            street:
+              type: string
+              description: Улица
+            house:
+              type: string
+              description: Дом 
+            apartment:
+              type: string
+              description: Квартира
+    BankCard:
+      allOf:
+        - required:
+            - number
+            - month
+            - year
+            - cardholderName
+            - cvc
+          properties:
+            number:
+              type: string
+              description: Номер
+            month:
+              type: integer
+              format: int32
+              description: Месяц
+            year:
+              type: integer
+              format: int32
+              description: Год
+            cardholderName:
+              type: string
+              description: Имя держателя
+            cvc:
+              type: string
+              description: Cvc код
+    DeliveryPeriod:
+      type: string
+      enum:
+        - morning
+        - midday
+        - evening
+        - night
+    Item:
+      allOf:
+        - required:
+            - goodId
+            - quantity            
+          properties:
+            goodId:
+              type: string
+              format: uuid
+              description: Идентификатор товара
+            quantity:
+              type: integer
+              format: int32
+              description: Количество            
     Good:
       allOf:
-        - $ref: '#/components/schemas/NewGood'
         - required:
           - id
           properties:
@@ -109,20 +249,12 @@ components:
               type: string
               format: uuid
               description: Идентификатор
-    NewGood:
-      required:
-        - title
-      properties:
-        title:
-          type: string
-          description: Название
-        description:
-          type: string
-          description: Описание
-        quantity:
-          type: integer
-          format: int32
-          description: Количество
+            title:
+              type: string
+              description: Название
+            description:
+              type: string
+              description: Описание    
     Error:
       required:
         - code
