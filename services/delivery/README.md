@@ -200,17 +200,18 @@ actor Менеджер as manager
 actor Курьер as courier
 actor Basket as basket << Система >>
 
-rectangle Delivery {
-  usecase (UC-1 Принятие заказа) as UC1
-  usecase (UC-2 Изменение статуса заказа на 'Доставлен') as UC2
-  usecase (UC-3 Получение статуса доставки) as UC3
-  usecase (UC-4 Назначение заказа) as UC4
+rectangle "Order service" {
+  usecase (UC-1 Создать заказ) as UC1
+  usecase (UC-2 Завершить выполнение заказа) as UC2
+  usecase (UC-3 Получить информацию о заказе) as UC3
+  usecase (UC-4 Назначить заказ на курьера) as UC4
+  usecase (UC-5 Отменить заказ) as UC5
   
-
-  url of UC1 is [[use-cases/uc-1.md]]
-  url of UC2 is [[use-cases/uc-2.md]]
-  url of UC3 is [[use-cases/uc-3.md]]
-  url of UC4 is [[use-cases/uc-4.md]]
+  url of UC1 is [[use-cases/uc-1-create-order.md]]
+  url of UC2 is [[use-cases/uc-2-complete-order.md]]
+  url of UC3 is [[use-cases/uc-3-get-order.md]]
+  url of UC4 is [[use-cases/uc-4-assign-order.md]]
+  url of UC5 is [[use-cases/uc-5-cancel-order.md]]
 }
 
 basket --> UC1
@@ -223,8 +224,9 @@ client --> UC3
 UC3 <--manager
 ```
 **Use cases**
-- [UC-1](use-cases/uc-1.md) Принятие заказа.
-- [UC-2](use-cases/uc-2.md) Изменение статуса заказа на 'Доставлен'.
-- [UC-3](use-cases/uc-3.md) Получение статуса доставки.
-- [UC-4](use-cases/uc-4.md) Назначение заказа.
+- [UC-1](use-cases/uc-1.md) Создать заказ.
+- [UC-2](use-cases/uc-2.md) Завершить выполнение заказа.
+- [UC-3](use-cases/uc-3.md) Получить информацию о заказе.
+- [UC-4](use-cases/uc-4.md) Назначить заказ на курьера.
+- [UC-4](use-cases/uc-5.md) Отменить заказ.
 

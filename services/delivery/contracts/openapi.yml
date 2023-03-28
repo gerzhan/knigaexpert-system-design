@@ -1,130 +1,18 @@
 openapi: "3.0.0"
 info:
   version: 1.0.0
-  title: Swagger Basket
+  title: Swagger Delivery
   description: Доставка товаров
 paths:
-  /api/v1/baskets/{basketId}/address/add:
+  /api/v1/orders/{orderId}/complete:
     post:
-      summary: Добавить адрес доставки
-      description: Позволяет добавить адрес доставки
-      operationId: AddAddress
+      summary: Завершить выполнение заказа
+      description: Позволяет завершить выполнение заказа
+      operationId: CompleteOrder
       parameters:
-        - name: basketId
+        - name: orderId
           in: path
-          description: Идентификатор корзины
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        description: Адрес
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Address'
-      responses:
-        '200':
-          description: Успешный ответ
-        default:
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /api/v1/baskets/{basketId}/bank-card/add:
-    post:
-      summary: Добавить банковскую карту
-      description: Позволяет добавить средство оплаты
-      operationId: AddBankCard
-      parameters:
-        - name: basketId
-          in: path
-          description: Идентификатор корзины
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        description: Банковская карта
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BankCard'
-      responses:
-        '200':
-          description: Успешный ответ
-        default:
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /api/v1/baskets/{basketId}/delivery-period/add:
-    post:
-      summary: Добавить период доставки
-      description: Позволяет период доставки
-      operationId: AddDeliveryPeriod
-      parameters:
-        - name: basketId
-          in: path
-          description: Идентификатор корзины
-          required: true
-          schema:
-            type: string
-            format: uuid
-      requestBody:
-        description: Период доставки
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/DeliveryPeriod'
-      responses:
-        '200':
-          description: Успешный ответ
-        default:
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'              
-  /api/v1/baskets/{basketId}/items/change:
-    post:
-      summary: Изменить позицию
-      description: Позволяет добавить/удалить/изменить позицию
-      operationId: ChangeItems
-      parameters:
-        - name: basketId
-          in: path
-          description: Идентификатор корзины
-          required: true
-          schema:
-            type: string
-            format: uuid          
-      requestBody:
-        description: Позиция
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Item'
-      responses:
-        '200':
-          description: Успешный ответ
-        default:
-          description: Ошибка
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /api/v1/baskets/{basketId}/checkout:
-    post:
-      summary: Оформить покупку
-      description: Позволяет оформить корзину
-      operationId: Checkout
-      parameters:
-        - name: basketId
-          in: path
-          description: Идентификатор корзины
+          description: Идентификатор заказа
           required: true
           schema:
             type: string
@@ -138,15 +26,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /api/v1/baskets/{basketId}/items:
+  /api/v1/orders/{orderId}/cancel:
+    post:
+      summary: Отменить заказ
+      description: Позволяет отменить заказ
+      operationId: CancelOrder
+      parameters:
+        - name: orderId
+          in: path
+          description: Идентификатор заказа
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Успешный ответ
+        default:
+          description: Ошибка
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/v1/orders/{orderId}:
     get:
-      summary: Получить состав корзины
-      description: Позволяет получить состав корзины
+      summary: Получить информацию о заказе
+      description: Позволяет получить состав заказа
       operationId: GetBasketItems
       parameters:
-        - name: basketId
+        - name: orderId
           in: path
-          description: Идентификатор корзины
+          description: Идентификатор заказа
           required: true
           schema:
             type: string
@@ -159,7 +69,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Item'
+                  $ref: '#/components/schemas/Order'
         default:
           description: Ошибка
           content:
@@ -255,6 +165,21 @@ components:
             description:
               type: string
               description: Описание    
+    Order:
+      allOf:
+        - required:
+          - id
+          - address
+          properties:
+            id:
+              type: string
+              format: uuid
+              description: Идентификатор
+            address:
+              type: string
+              format: uuid
+              description: Идентификатор
+
     Error:
       required:
         - code
